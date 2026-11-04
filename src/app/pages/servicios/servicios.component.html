@@ -1,0 +1,113 @@
+<!-- ========================================================================= -->
+<!-- VISTA 1: DETALLE DE UN SERVICIO ESPECÍFICO                                  -->
+<!-- ========================================================================= -->
+<ng-container *ngIf="selectedService; else catalogView">
+  <!-- Banner Detalle de Servicio -->
+  <section class="service-detail-hero">
+    <div class="container reveal-up">
+      <nav class="breadcrumb-nav">
+        <a routerLink="/servicios"><i class="fa-solid fa-arrow-left"></i> Todos los servicios</a>
+        <span class="sep">/</span>
+        <span>{{ selectedService.title }}</span>
+      </nav>
+      <h1>{{ selectedService.title }}</h1>
+      <p class="service-detail-tagline">{{ selectedService.tagline || selectedService.desc }}</p>
+    </div>
+  </section>
+
+  <!-- Contenido Detallado -->
+  <section class="service-detail-body">
+    <div class="container">
+      <div class="service-detail-layout">
+
+        <!-- Columna Principal: Información y Alcance -->
+        <div class="service-main-content reveal-left">
+          <div class="detail-card">
+            <!-- Imagen representativa del servicio -->
+            <div class="detail-media" *ngIf="selectedService.image">
+              <img [src]="'/assets/images/services/cards/' + selectedService.image" [alt]="selectedService.title" class="detail-img">
+            </div>
+
+            <p class="detail-text-p">{{ selectedService.fullDesc || selectedService.desc }}</p>
+
+            <!-- ¿Qué incluye? -->
+            <div class="detail-section-block" *ngIf="selectedService.includes && selectedService.includes.length > 0">
+              <h3>¿Qué incluye este servicio?</h3>
+              <ul class="detail-includes-list">
+                <li *ngFor="let item of selectedService.includes">
+                  <span class="check-bullet"><i class="fa-solid fa-check"></i></span>
+                  <span>{{ item }}</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Columna Lateral: Caja de Cotización y Otros Servicios -->
+        <aside class="service-sidebar reveal-right delay-1">
+          <!-- Tarjeta de Cotización Directa -->
+          <div class="sidebar-card sidebar-card--cta">
+            <h3>¿Interesado en este servicio?</h3>
+            <p>Comunícate con uno de nuestros asesores para recibir una propuesta a la medida de tu empresa.</p>
+            <a [href]="getServiceWhatsAppUrl(selectedService.title)" target="_blank" rel="noopener" class="sidebar-cta-btn">
+              <i class="fa-brands fa-whatsapp"></i> Cotizar por WhatsApp
+            </a>
+          </div>
+
+          <!-- Otros Servicios -->
+          <div class="sidebar-card sidebar-card--links">
+            <h4>Otros Servicios</h4>
+            <ul class="sidebar-services-list">
+              <li *ngFor="let other of otherServices">
+                <a [routerLink]="'/' + other.id" (click)="selectServiceById(other.id)">
+                  <i [class]="other.icon"></i>
+                  <span>{{ other.title }}</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </aside>
+
+      </div>
+    </div>
+  </section>
+</ng-container>
+
+<!-- ========================================================================= -->
+<!-- VISTA 2: CATÁLOGO GENERAL DE SERVICIOS                                      -->
+<!-- ========================================================================= -->
+<ng-template #catalogView>
+  <div class="page-banner">
+    <div class="container reveal-up">
+      <h1>Nuestros Servicios</h1>
+      <p>Soluciones contables, tributarias, laborales y financieras diseñadas a tu medida.</p>
+    </div>
+  </div>
+
+  <section class="services-list-section">
+    <div class="container">
+      <div class="services-grid reveal-stagger">
+        <div class="service-card reveal-up" *ngFor="let s of allServices">
+          <!-- Imagen de la tarjeta (si existe) -->
+          <div class="service-card-media" *ngIf="s.image">
+            <img [src]="'/assets/images/services/cards/' + s.image" [alt]="s.title" class="service-card-img" loading="lazy">
+          </div>
+
+          <!-- Ícono si no hay imagen -->
+          <div class="service-icon-box" *ngIf="!s.image">
+            <i [class]="s.icon"></i>
+          </div>
+
+          <h3 class="service-card-title">{{ s.title }}</h3>
+          <p class="service-card-desc">{{ s.desc }}</p>
+          
+          <div class="service-card-actions">
+            <a [routerLink]="'/' + s.id" (click)="selectService(s)" class="service-detail-btn">
+              Ver Información
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</ng-template>

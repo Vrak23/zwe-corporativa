@@ -1,0 +1,83 @@
+<header class="et-l et-l--header header-custom">
+  <div class="header-inner">
+    <!-- Desktop Header -->
+    <div class="header-desktop">
+      <div class="header-brand-nav">
+        <a routerLink="/" class="header-logo-link">
+          <img src="/assets/images/brand/logo-zwe-corporativa.png" alt="ZWE Corporativa" class="header-logo-img">
+        </a>
+        <nav class="header-nav">
+          <ul class="nav-list">
+            <li class="nav-item"><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Inicio</a></li>
+            <li class="nav-item"><a routerLink="/nosotros" routerLinkActive="active">Nosotros</a></li>
+            <li class="nav-item"><a routerLink="/blog" routerLinkActive="active">Blog</a></li>
+            <li class="nav-item nav-has-dropdown">
+              <a routerLink="/servicios" routerLinkActive="active" class="dropdown-trigger">Servicios <i class="fa-solid fa-chevron-down nav-arrow"></i></a>
+              <ul class="header-dropdown-menu">
+                <li><a routerLink="/asesoria-contable">Asesoría y Contabilidad Integral</a></li>
+                <li><a routerLink="/asesoria-tributaria">Asesoría Tributaria</a></li>
+                <li><a routerLink="/asesoria-financiera-empresarial">Asesoría Financiera Empresarial</a></li>
+                <li><a routerLink="/asesoria-legal-corporativa">Asesoría Legal Corporativa</a></li>
+                <li><a routerLink="/constitucion-de-empresas">Constitución de Empresas</a></li>
+                <li><a routerLink="/administracion-de-planillas">Administración de Planillas y Nóminas</a></li>
+                <li><a routerLink="/asesoria-laboral">Asesoría Laboral para Empresas</a></li>
+                <li><a routerLink="/servicio-de-seleccion-de-personal">Servicio de Selección de Personal</a></li>
+                <li><a routerLink="/asesoria-administrativa">Gestión y Asesoría Administrativa</a></li>
+              </ul>
+            </li>
+            <li class="nav-item"><a routerLink="/contacto" routerLinkActive="active">Contacto</a></li>
+          </ul>
+        </nav>
+      </div>
+
+      <div class="header-actions">
+        <ul class="header-social-list">
+          <li><a href="https://www.facebook.com/profile.php?id=61587699790901" target="_blank" rel="noopener" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a></li>
+          <li><a href="https://www.instagram.com/zwe.corporativa/" target="_blank" rel="noopener" title="Instagram"><i class="fa-brands fa-instagram"></i></a></li>
+          <li><a href="https://www.tiktok.com/@zwe.corporativa.s?_r=1&#038;_t=ZS-93pwiAEOtY9" target="_blank" rel="noopener" title="TikTok"><i class="fa-brands fa-tiktok"></i></a></li>
+        </ul>
+        <a routerLink="/contacto" class="header-cta-btn">Contáctanos</a>
+      </div>
+    </div>
+
+    <!-- Mobile Header -->
+    <div class="header-mobile">
+      <a routerLink="/" class="header-logo-link">
+        <img src="/assets/images/brand/logo-zwe-corporativa.png" alt="ZWE Corporativa" class="header-logo-img">
+      </a>
+      <button class="mobile-toggle-btn" (click)="toggleMobileMenu()" aria-label="Abrir menú">
+        <i class="fa-solid" [ngClass]="isMobileMenuOpen ? 'fa-xmark' : 'fa-bars'"></i>
+      </button>
+    </div>
+
+    <!-- Mobile Menu Drawer -->
+    <div class="mobile-drawer" *ngIf="isMobileMenuOpen">
+      <ul class="mobile-nav-list">
+        <li><a routerLink="/" (click)="closeMobileMenu()">Inicio</a></li>
+        <li><a routerLink="/nosotros" (click)="closeMobileMenu()">Nosotros</a></li>
+        <li><a routerLink="/blog" (click)="closeMobileMenu()">Blog</a></li>
+        <li class="mobile-dropdown-item">
+          <div class="mobile-dropdown-header" (click)="toggleMobileServices()">
+            <span>Servicios</span>
+            <i class="fa-solid" [ngClass]="isMobileServicesOpen ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
+          </div>
+          <ul class="mobile-sub-menu" *ngIf="isMobileServicesOpen">
+            <li><a routerLink="/asesoria-contable" (click)="closeMobileMenu()">Asesoría y Contabilidad Integral</a></li>
+            <li><a routerLink="/asesoria-tributaria" (click)="closeMobileMenu()">Asesoría Tributaria</a></li>
+            <li><a routerLink="/asesoria-financiera-empresarial" (click)="closeMobileMenu()">Asesoría Financiera Empresarial</a></li>
+            <li><a routerLink="/asesoria-legal-corporativa" (click)="closeMobileMenu()">Asesoría Legal Corporativa</a></li>
+            <li><a routerLink="/constitucion-de-empresas" (click)="closeMobileMenu()">Constitución de Empresas</a></li>
+            <li><a routerLink="/administracion-de-planillas" (click)="closeMobileMenu()">Administración de Planillas y Nóminas</a></li>
+            <li><a routerLink="/asesoria-laboral" (click)="closeMobileMenu()">Asesoría Laboral para Empresas</a></li>
+            <li><a routerLink="/servicio-de-seleccion-de-personal" (click)="closeMobileMenu()">Servicio de Selección de Personal</a></li>
+            <li><a routerLink="/asesoria-administrativa" (click)="closeMobileMenu()">Gestión y Asesoría Administrativa</a></li>
+          </ul>
+        </li>
+        <li><a routerLink="/contacto" (click)="closeMobileMenu()">Contacto</a></li>
+      </ul>
+      <div class="mobile-drawer-actions">
+        <a routerLink="/contacto" (click)="closeMobileMenu()" class="header-cta-btn mobile-cta">Contáctanos</a>
+      </div>
+    </div>
+  </div>
+</header>

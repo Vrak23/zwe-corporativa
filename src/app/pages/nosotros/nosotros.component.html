@@ -1,0 +1,286 @@
+<!-- ── 1. BANNER PRINCIPAL (ESTILO SERVICIOS / BLOG) ──────────────── -->
+<div class="page-banner">
+  <div class="container reveal-up">
+    <h1>Sobre Nosotros</h1>
+    <p>Solidez contable, blindaje tributario y visión estratégica para impulsar el crecimiento de tu empresa.</p>
+  </div>
+</div>
+
+<!-- ── 2. QUIÉNES SOMOS (CON LOGO PROPORCIONAL) ────────────────────── -->
+<section class="about-section">
+  <div class="container">
+    <div class="about-overview-grid">
+
+      <!-- Columna Izquierda: Logo ZWE Corporativa Proporcional -->
+      <div class="about-logo-col">
+        <div class="about-logo-showcase">
+          <div class="logo-circle-glow"></div>
+          <img src="/assets/images/brand/logo-zwe-corporativa.png" alt="Logo ZWE Corporativa" class="about-brand-logo">
+          <div class="about-logo-caption">
+            <span class="caption-tag">ESTUDIO CONTABLE &amp; CORPORATIVO</span>
+            <p>Más de 15 años acompañando el desarrollo empresarial en el Perú</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Columna Derecha: Información y Propuesta -->
+      <div class="about-info-col reveal-right delay-1">
+        <span class="section-tag">Nuestra Firma</span>
+        <h2>ZWE Corporativa: <em>Tu socio estratégico en gestión integral</em></h2>
+        
+        <p class="about-lead">
+          Somos una firma consultora multidisciplinaria especializada en brindar soluciones integrales en 
+          <strong>contabilidad, tributación, finanzas, asesoría legal y gestión laboral</strong> en el Perú.
+        </p>
+
+        <p>
+          En <strong>ZWE Corporativa</strong>, entendemos que el cumplimiento normativo es la base, pero el crecimiento sostenible es la meta. 
+          Por ello, transformamos la complejidad de las obligaciones fiscales y laborales en estrategias claras que optimizan costos y mejoran 
+          la rentabilidad de micro, pequeñas y medianas empresas (MYPEs y PYMEs).
+        </p>
+
+        <ul class="about-highlights-list">
+          <li>
+            <i class="fa-solid fa-check"></i>
+            <span>Equipo multidisciplinario de contadores públicos colegiados y abogados corporativos.</span>
+          </li>
+          <li>
+            <i class="fa-solid fa-check"></i>
+            <span>Cumplimiento riguroso de normativas SUNAT (SIRE, PLE, Renta) y SUNAFIL.</span>
+          </li>
+          <li>
+            <i class="fa-solid fa-check"></i>
+            <span>Atención cercana, confidencial y personalizada a las necesidades de cada sector.</span>
+          </li>
+        </ul>
+
+        <div class="about-actions">
+          <a routerLink="/contacto" class="btn-primary-custom">
+            Contáctanos <i class="fa-solid fa-arrow-right"></i>
+          </a>
+          <a routerLink="/servicios" class="btn-outline-custom">
+            Ver Servicios
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── 3. SECCIÓN VIDEO CORPORATIVO (AUTO-PLAY ON SCROLL) ─────────── -->
+<section class="video-cinema-section">
+  <!-- Halos de luz de fondo corporativo -->
+  <div class="video-glow-gold"></div>
+  <div class="video-glow-blue"></div>
+
+  <div class="container">
+    <div class="video-header reveal-up">
+      <span class="section-tag">Nuestra Cultura en Movimiento</span>
+      <h2>ZWE Corporativa en Acción</h2>
+      <p>Conoce de cerca nuestro compromiso, rigor técnico y el equipo multidisciplinario que respalda a tu empresa.</p>
+    </div>
+
+    <!-- Contenedor del reproductor de video -->
+    <div class="video-frame-wrapper reveal-up delay-1">
+      <div class="video-frame-card">
+        
+        <video
+          #videoRef
+          class="video-element"
+          [muted]="isMuted"
+          muted
+          autoplay
+          playsinline
+          loop
+          preload="auto">
+          <source src="/assets/videos/nosotros/zwe-intro.mp4" type="video/mp4">
+          <source src="/assets/videos/nosotros/zwe%20intro.mp4" type="video/mp4">
+          <source src="/assets/videos/nosotros/zwe intro.mp4" type="video/mp4">
+          Tu navegador no soporta la reproducción de video HTML5.
+        </video>
+
+        <!-- Widget flotante de control de volumen interactivo -->
+        <div 
+          class="video-volume-widget"
+          [class.is-expanded]="isVolumeOpen"
+          (mouseenter)="isVolumeOpen = true"
+          (mouseleave)="isVolumeOpen = false">
+          
+          <button 
+            type="button" 
+            class="btn-volume-toggle"
+            (click)="toggleMute()"
+            [title]="isMuted ? 'Activar sonido' : 'Silenciar'"
+            [attr.aria-label]="isMuted ? 'Activar sonido' : 'Silenciar'">
+            <i class="fa-solid" [ngClass]="isMuted || volume === 0 ? 'fa-volume-xmark' : 'fa-volume-high'"></i>
+          </button>
+
+          <!-- Slider desplegable -->
+          <div class="volume-slider-box">
+            <input 
+              type="range" 
+              min="0" 
+              max="1" 
+              step="0.05"
+              [value]="isMuted ? 0 : volume"
+              (input)="handleVolumeChange($event)"
+              class="volume-range-input"
+              [title]="'Volumen: ' + (isMuted ? 0 : (volume * 100 | number:'1.0-0')) + '%'"
+              aria-label="Control de volumen">
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 4. FUNDAMENTOS: MISIÓN & VISIÓN (DISEÑO EDITORIAL DUAL) ────── -->
+<section class="identity-section">
+  <div class="container">
+    <div class="section-title-box reveal-up">
+      <span class="section-tag">Fundamentos</span>
+      <h2>Nuestra Identidad Corporativa</h2>
+      <p>El propósito estratégico y los valores éticos que definen nuestro trabajo diario.</p>
+    </div>
+
+    <!-- Misión & Visión: Bloques Destacados Split -->
+    <div class="mv-dual-grid">
+
+      <!-- Misión -->
+      <div class="mv-block mv-block--mision reveal-left">
+        <div class="mv-icon-badge">
+          <i class="fa-solid fa-bullseye"></i>
+        </div>
+        <div class="mv-content">
+          <span class="mv-subtitle">PROPÓSITO Y COMPROMISO</span>
+          <h3>Nuestra Misión</h3>
+          <p class="mv-text">
+            Proveer soluciones integrales, personalizadas y estratégicas en contabilidad, tributación, finanzas y gestión laboral, 
+            garantizando el estricto cumplimiento normativo para blindar a las empresas y respaldar una óptima toma de decisiones gerenciales.
+          </p>
+        </div>
+      </div>
+
+      <!-- Visión -->
+      <div class="mv-block mv-block--vision reveal-right">
+        <div class="mv-icon-badge">
+          <i class="fa-solid fa-eye"></i>
+        </div>
+        <div class="mv-content">
+          <span class="mv-subtitle">HACIA DÓNDE VAMOS</span>
+          <h3>Nuestra Visión</h3>
+          <p class="mv-text">
+            Ser la firma consultora líder y de mayor confianza en soluciones contables y financieras para el sector empresarial en el Perú, 
+            reconocida por nuestra innovación técnica, rigor contable, cercanía humana y contribución al crecimiento de nuestros clientes.
+          </p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Principios y Valores: Barra Horizontal Elegante (Sin exceso de cards) -->
+    <div class="values-bar-wrapper reveal-up delay-1">
+      <div class="values-bar-header">
+        <i class="fa-solid fa-shield-halved"></i>
+        <h4>Nuestros Valores Fundamentales</h4>
+      </div>
+      <div class="values-bar-grid">
+        <div class="val-item">
+          <span class="val-num">01</span>
+          <div class="val-info">
+            <h5>Compromiso</h5>
+            <p>Enfoque total en el éxito y estabilidad de tu negocio.</p>
+          </div>
+        </div>
+        <div class="val-item">
+          <span class="val-num">02</span>
+          <div class="val-info">
+            <h5>Integridad</h5>
+            <p>Transparencia y conducta ética en cada proceso contable.</p>
+          </div>
+        </div>
+        <div class="val-item">
+          <span class="val-num">03</span>
+          <div class="val-info">
+            <h5>Trabajo en Equipo</h5>
+            <p>Sinergia multidisciplinaria de especialistas dedicados.</p>
+          </div>
+        </div>
+        <div class="val-item">
+          <span class="val-num">04</span>
+          <div class="val-info">
+            <h5>Honestidad</h5>
+            <p>Diagnósticos sinceros y prevención de contingencias.</p>
+          </div>
+        </div>
+        <div class="val-item">
+          <span class="val-num">05</span>
+          <div class="val-info">
+            <h5>Puntualidad</h5>
+            <p>Declaraciones, nóminas y estados financieros al día.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── 4. PILARES DE SERVICIO (DISEÑO EDITORIAL CON DIVISORES) ──────── -->
+<section class="pillars-section">
+  <div class="container">
+    <div class="section-title-box reveal-up">
+      <span class="section-tag">Garantía ZWE</span>
+      <h2>¿Por qué confiar en nosotros?</h2>
+      <p>La combinación perfecta entre rigor técnico, seguridad jurídica y acompañamiento constante.</p>
+    </div>
+
+    <div class="pillars-editorial-row reveal-up delay-1">
+      
+      <div class="pillar-col">
+        <span class="pillar-tag">01</span>
+        <h4>Asesoría a la Medida</h4>
+        <p>Planes personalizados según el rubro, tamaño y régimen tributario de tu negocio, sin paquetes genéricos.</p>
+      </div>
+
+      <div class="pillar-col">
+        <span class="pillar-tag">02</span>
+        <h4>Cero Multas</h4>
+        <p>Auditoría preventiva que elimina contingencias y sanciones costosas ante SUNAT, SUNAFIL y bancos.</p>
+      </div>
+
+      <div class="pillar-col">
+        <span class="pillar-tag">03</span>
+        <h4>Confidencialidad</h4>
+        <p>Seguridad informática y reserva absoluta en el manejo de planillas, sueldos y datos financieros.</p>
+      </div>
+
+      <div class="pillar-col">
+        <span class="pillar-tag">04</span>
+        <h4>Soporte Integral</h4>
+        <p>Respaldo continuo de contadores y abogados para resolver consultas comerciales de forma inmediata.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── 5. BANNER CTA FINAL ─────────────────────────────────────────── -->
+<section class="about-cta-section">
+  <div class="container">
+    <div class="about-cta-card reveal-zoom">
+      <div class="cta-text">
+        <h2>¿Listo para llevar la gestión de tu empresa al siguiente nivel?</h2>
+        <p>Conversemos sobre las necesidades de tu negocio y recibe una propuesta personalizada sin compromiso.</p>
+      </div>
+      <div class="cta-button-wrap">
+        <a routerLink="/contacto" class="btn-cta-white">
+          Solicitar Asesoría <i class="fa-solid fa-arrow-right"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,203 @@
+<!-- ===================================================
+  HOME - ZWE CORPORATIVA (Angular Native, clean HTML)
+  =================================================== -->
+
+<!-- ── 1. HERO ───────────────────────────────────────── -->
+<section class="hero-section">
+  <div class="hero-inner">
+    <!-- Left: text -->
+    <div class="hero-left">
+      <div class="hero-badge-wrap reveal-up delay-1">
+        <span class="hero-badge">ESTUDIO CONTABLE EN <strong>LIMA-PERÚ</strong></span>
+      </div>
+
+      <div class="hero-text-wrap reveal-up delay-2">
+        <h1 class="hero-title-main">ESPECIALISTAS EN CONTABILIDAD &amp; OUTSOURCING</h1>
+        <h2 class="hero-title-sub">para PYMES</h2>
+      </div>
+
+      <p class="hero-desc reveal-up delay-3">
+        Con más de 15 años de experiencia, garantizamos la más alta calidad en outsourcing
+        y consultoría contable, tributaria, laboral, financiera y legal corporativa.
+      </p>
+
+      <a class="hero-btn-whatsapp reveal-up delay-4"
+         href="https://api.whatsapp.com/send/?phone=51918663597&text=Hola+%2AZWE+Corporativa%2A.+Necesito+m%C3%A1s+informaci%C3%B3n+sobre+ZWE+Corporativa+https%3A%2F%2Fwww.zwecorporativa.com%2F&type=phone_number&app_absent=0"
+         target="_blank" rel="noopener">
+        <i class="fa-brands fa-whatsapp"></i> Comunícate con un Asesor
+      </a>
+    </div>
+
+    <!-- Right: image -->
+    <div class="hero-right reveal-right delay-2">
+      <img src="/assets/images/backgrounds/fondohome.webp"
+           alt="Especialistas en Contabilidad &amp; Outsourcing"
+           class="hero-img floating-elem">
+    </div>
+  </div>
+</section>
+
+<!-- ── 2. ¿POR QUÉ ELEGIRNOS? ────────────────────────── -->
+<section class="why-section">
+  <div class="container">
+    <h2 class="why-heading reveal-up">¿Por qué elegirnos?</h2>
+    <div class="why-cards reveal-stagger">
+      <div class="why-card reveal-up" *ngFor="let f of features">
+        <div class="why-icon">
+          <i [class]="f.icon"></i>
+        </div>
+        <h4>{{ f.title }}</h4>
+        <p>{{ f.desc }}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 3. SERVICIOS ───────────────────────────────────── -->
+<section class="services-section">
+  <div class="container">
+    <!-- Section heading -->
+    <div class="section-heading reveal-up">
+      <h2><em>Servicios que te ayudarán a </em><strong>lograr el éxito de tu negocio</strong>.</h2>
+    </div>
+
+    <!-- Services box -->
+    <div class="sm-container">
+      <!-- Tabs -->
+      <div class="sm-tabs-grid reveal-up delay-1">
+        <button 
+          *ngFor="let s of servicesTabs" 
+          class="sm-tab-btn" 
+          [class.active]="tab === s.id" 
+          (click)="tab = s.id">
+          <i [class]="s.icon + ' sm-tab-icon'"></i>
+          <span class="sm-tab-title">{{ s.title }}</span>
+        </button>
+      </div>
+
+      <!-- Content area -->
+      <div class="sm-content-wrapper reveal-zoom delay-2">
+        <ng-container *ngFor="let s of servicesTabs">
+          <div class="sm-text-side" *ngIf="tab === s.id">
+            <span class="sm-service-badge" *ngIf="s.badge">{{ s.badge }}</span>
+            <h3>{{ s.title }}</h3>
+            <p class="sm-service-tagline" *ngIf="s.tagline"><em>{{ s.tagline }}</em></p>
+            <p>{{ s.subtitle }}</p>
+            <ul class="sm-list">
+              <li *ngFor="let b of s.bullets">
+                <span class="sm-check-icon">✓</span> {{ b }}
+              </li>
+            </ul>
+
+            <div class="sm-btn-actions">
+              <a [href]="getQuoteUrl()" target="_blank" rel="noopener" class="sm-btn-cotizar">
+                Cotizar Servicio
+              </a>
+              <a [routerLink]="s.link" class="sm-btn-more">
+                Ver detalle <i class="fa-solid fa-arrow-right"></i>
+              </a>
+            </div>
+          </div>
+        </ng-container>
+
+        <div class="sm-image-side">
+          <img src="/assets/images/services/imagen.webp" alt="Asesora Contable ZWE Corporativa" class="sm-person-img" loading="lazy">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 4. BANNER "EMPECEMOS A TRABAJAR JUNTOS" ───────── -->
+<section class="cta-banner-section">
+  <div class="container">
+    <div class="cta-banner-inner">
+      <div class="cta-banner-left reveal-left">
+        <h2><span><em>Empecemos a</em> </span><strong>TRABAJAR JUNTOS</strong></h2>
+      </div>
+      <div class="cta-banner-right reveal-right delay-1">
+        <p>Sabemos que contar con un asesor contable es importante para el éxito de tu negocio,
+           por ello ZWE Corporativa te ofrecemos la garantía que tu contabilidad estará en buenas
+           manos, para brindarte un soporte integral.
+           <strong>Deja tu contabilidad en nuestras manos y enfócate en las actividades que le dan valor a tu empresa.</strong>
+        </p>
+        <a class="cta-btn-contact"
+           href="https://api.whatsapp.com/send/?phone=51918663597&text=Hola+%2AZWE+Corporativa%2A.+Necesito+m%C3%A1s+informaci%C3%B3n+sobre+ZWE+Corporativa+https%3A%2F%2Fwww.zwecorporativa.com%2F&type=phone_number&app_absent=0"
+           target="_blank" rel="noopener">
+          Comunícate con Nosotros
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 5. CLIENTES ────────────────────────────────────── -->
+<section class="clients-section">
+  <div class="section-heading reveal-up">
+    <h2><em>Más de 150 clientes </em><strong>confían en nosotros</strong></h2>
+  </div>
+
+  <div class="clients-marquee-container reveal-zoom delay-1"
+       (mouseenter)="pauseMarquee = true"
+       (mouseleave)="pauseMarquee = false">
+    <div class="clients-marquee-track" [class.paused]="pauseMarquee">
+      <div class="client-logo-card" *ngFor="let logo of clientLogos">
+        <img [src]="'/assets/images/clients/' + logo" [alt]="logo" loading="lazy">
+      </div>
+      <!-- Duplicated for infinite loop -->
+      <div class="client-logo-card" *ngFor="let logo of clientLogos">
+        <img [src]="'/assets/images/clients/' + logo" [alt]="logo" loading="lazy">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 6. CONSTITUCIÓN DE EMPRESA ────────────────────── -->
+<section class="constitution-section">
+  <div class="constitution-content">
+
+    <!-- Columna izquierda: línea decorativa + título -->
+    <div class="const-col-title reveal-left">
+      <div class="const-accent-line"></div>
+      <h2>
+        <em>¿Estás emprendiendo y deseas</em>
+        <strong>CONSTITUIR TU PROPIA EMPRESA?</strong>
+      </h2>
+    </div>
+
+    <!-- Columna derecha: texto + botón -->
+    <div class="const-col-body reveal-right delay-1">
+      <p>En ZWE Corporativa, te ayudamos a formalizar tu negocio.
+         Escoge el tipo de empresa que más te conviene.</p>
+      <a class="const-btn-cta"
+         href="https://api.whatsapp.com/send/?phone=51918663597&text=Hola+%2AZWE+Corporativa%2A.+Necesito+m%C3%A1s+informaci%C3%B3n+sobre+ZWE+Corporativa+https%3A%2F%2Fwww.zwecorporativa.com%2F&type=phone_number&app_absent=0"
+         target="_blank" rel="noopener">
+        Constituye tu Empresa
+      </a>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── 7. FAQ ─────────────────────────────────────────── -->
+<section class="faq-section">
+  <div class="container">
+    <h2 class="faq-heading reveal-up">
+      <em>Preguntas Frecuentes </em><strong>(FAQ)</strong>
+    </h2>
+
+    <div class="faq-list reveal-stagger">
+      <div class="faq-item reveal-up"
+           *ngFor="let faq of faqs; let i = index"
+           [class.open]="openFaqIndex === i">
+        <h5 class="faq-question" (click)="toggleFaqItem(i)">
+          {{ faq.q }}
+          <i class="fa-solid" [class.fa-chevron-down]="openFaqIndex !== i" [class.fa-chevron-up]="openFaqIndex === i"></i>
+        </h5>
+        <div class="faq-answer" *ngIf="openFaqIndex === i">
+          <p>{{ faq.a }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

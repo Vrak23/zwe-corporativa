@@ -1,0 +1,296 @@
+// =============================================================================
+// BLOG COMPONENT STYLES — ZWE Corporativa
+// =============================================================================
+
+$blue-dark:  #233158;
+$blue-mid:   #003d6b;
+$blue-light: #5da4d6;
+$yellow:     #fcbb07;
+$text-dark:  #1e293b;
+$text-muted: #64748b;
+$bg-light:   #f8fafc;
+$border-col: #e2e8f0;
+
+*, *::before, *::after { box-sizing: border-box; }
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+
+  @media (max-width: 480px) { padding: 0 16px; }
+}
+
+// =============================================================================
+// 1. BANNER
+// =============================================================================
+.page-banner {
+  background: linear-gradient(135deg, $blue-dark 0%, #172445 100%);
+  color: #ffffff;
+  padding: 50px 0 54px;
+  text-align: center;
+
+  h1 {
+    color: #ffffff;
+    font-size: 38px;
+    font-weight: 800;
+    margin: 0 0 14px;
+    letter-spacing: -0.5px;
+    position: relative;
+
+    &::after {
+      content: '';
+      display: block;
+      width: 44px;
+      height: 3px;
+      background: $yellow;
+      margin: 12px auto 0;
+    }
+
+    @media (max-width: 768px) { font-size: 28px; }
+    @media (max-width: 480px) { font-size: 24px; }
+  }
+
+  p {
+    color: rgba(255, 255, 255, 0.88);
+    font-size: 16px;
+    max-width: 680px;
+    margin: 0 auto;
+    line-height: 1.6;
+
+    @media (max-width: 480px) { font-size: 14px; }
+  }
+}
+
+// =============================================================================
+// 2. SECCIÓN PRINCIPAL & FILTROS
+// =============================================================================
+.blog-section {
+  background: #f8fafc;
+  padding: 56px 0 80px;
+
+  @media (max-width: 768px) { padding: 40px 0 60px; }
+}
+
+.blog-categories {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 40px;
+
+  @media (max-width: 480px) {
+    gap: 8px;
+    margin-bottom: 28px;
+  }
+
+  .category-btn {
+    background: #ffffff;
+    color: $blue-dark;
+    border: 1px solid $border-col;
+    border-radius: 0;
+    padding: 8px 20px;
+    font-size: 13.5px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+
+    &:hover {
+      background: #f1f5f9;
+      color: $blue-dark;
+      border-color: #cbd5e1;
+    }
+
+    &.active {
+      background: $blue-dark;
+      color: #ffffff;
+      border-color: $blue-dark;
+    }
+
+    @media (max-width: 480px) {
+      padding: 6px 14px;
+      font-size: 12px;
+    }
+  }
+}
+
+// =============================================================================
+// 3. GRID DE TARJETAS
+// =============================================================================
+.blog-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 28px;
+
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+  }
+
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+}
+
+.blog-card {
+  background: #ffffff;
+  border-radius: 0;
+  overflow: hidden;
+  border: 1px solid $border-col;
+  border-top: 3px solid $blue-dark;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+  display: flex;
+  flex-direction: column;
+  opacity: 1 !important;
+  animation: fadeInCard 0.3s ease-out;
+
+  .blog-card-media {
+    position: relative;
+    height: 210px;
+    background: #e2e8f0;
+    overflow: hidden;
+
+    @media (max-width: 480px) { height: 180px; }
+
+    .blog-card-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      border-radius: 0;
+    }
+
+    .blog-card-date {
+      position: absolute;
+      bottom: 12px;
+      left: 12px;
+      background: rgba(35, 49, 88, 0.92);
+      color: #ffffff;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 0;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+  }
+
+  .blog-card-content {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+
+    @media (max-width: 480px) { padding: 18px; }
+  }
+
+  .blog-card-tag {
+    color: $blue-mid;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 8px;
+    display: inline-block;
+  }
+
+  .blog-card-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: $text-dark;
+    line-height: 1.35;
+    margin: 0 0 10px;
+
+    @media (max-width: 480px) { font-size: 16px; }
+  }
+
+  .blog-card-excerpt {
+    color: $text-muted;
+    font-size: 14px;
+    line-height: 1.6;
+    margin: 0 0 16px;
+    flex-grow: 1;
+  }
+
+  .blog-card-link-btn {
+    margin-top: auto;
+    padding-top: 12px;
+    border-top: 1px solid #f1f5f9;
+
+    .btn-read-more {
+      color: $blue-mid;
+      font-size: 13px;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: gap 0.2s ease, color 0.2s ease;
+
+      i {
+        font-size: 11px;
+        transition: transform 0.2s ease;
+      }
+    }
+  }
+
+  &.is-clickable {
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+    &:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+
+      .blog-card-title {
+        color: $blue-mid;
+      }
+
+      .btn-read-more {
+        color: $yellow;
+
+        i {
+          transform: translateX(4px);
+        }
+      }
+    }
+  }
+}
+
+.blog-loading {
+  text-align: center;
+  padding: 50px 0;
+  color: $blue-dark;
+
+  i {
+    font-size: 32px;
+    margin-bottom: 12px;
+    color: $blue-mid;
+  }
+
+  p {
+    color: $text-muted;
+    font-size: 14px;
+    margin: 0;
+  }
+}
+
+.blog-empty {
+  text-align: center;
+  padding: 40px 0;
+  color: $text-muted;
+  font-size: 15px;
+}
+
+@keyframes fadeInCard {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

@@ -1,0 +1,326 @@
+<!-- ── TOAST NOTIFICATIONS ─────────────────────────────── -->
+<div class="toast-container" *ngIf="toastMessage">
+  <div class="toast-alert" [ngClass]="toastType">
+    <i class="fa-solid" [ngClass]="toastType === 'success' ? 'fa-circle-check' : 'fa-circle-exclamation'"></i>
+    <span>{{ toastMessage }}</span>
+  </div>
+</div>
+
+<!-- ========================================================================= -->
+<!-- 1. PANTALLA DE LOGIN (Si no está autenticado)                             -->
+<!-- ========================================================================= -->
+<div class="admin-login-wrapper" *ngIf="!isAuthenticated">
+  <div class="admin-login-card">
+    <div class="login-header">
+      <img src="/assets/images/brand/logo-zwe-corporativa.png" alt="ZWE Corporativa" class="login-logo">
+      <h2>Panel de Noticias Blog</h2>
+      <p>Ingresa tu clave de acceso para administrar el blog.</p>
+    </div>
+
+    <form (ngSubmit)="login()" class="login-form">
+      <div class="form-group">
+        <label for="pinInput">Contraseña de Administrador</label>
+        <div class="input-with-icon">
+          <i class="fa-solid fa-lock"></i>
+          <input 
+            type="password" 
+            id="pinInput" 
+            [(ngModel)]="pinInput" 
+            name="pinInput" 
+            placeholder="Introduce la clave de acceso" 
+            required 
+            autocomplete="current-password"
+            autofocus>
+        </div>
+      </div>
+
+      <div class="login-error" *ngIf="loginError">
+        <i class="fa-solid fa-triangle-exclamation"></i> {{ loginError }}
+      </div>
+
+      <button type="submit" class="btn-primary btn-block">
+        <i class="fa-solid fa-arrow-right-to-bracket"></i> Iniciar Sesión
+      </button>
+    </form>
+  </div>
+</div>
+
+<!-- ========================================================================= -->
+<!-- 2. PANEL PRINCIPAL DE ADMINISTRACIÓN                                      -->
+<!-- ========================================================================= -->
+<div class="admin-dashboard" *ngIf="isAuthenticated">
+
+  <!-- Top Bar -->
+  <header class="admin-header">
+    <div class="admin-header-content">
+      <div class="admin-brand">
+        <img src="/assets/images/brand/logo-zwe-corporativa.png" alt="ZWE" class="brand-logo">
+        <div>
+          <h1>Gestor de Noticias</h1>
+          <span class="badge-live"><i class="fa-solid fa-circle"></i> En Vivo (Supabase Cloud)</span>
+        </div>
+      </div>
+
+      <div class="admin-header-actions">
+        <a href="/blog" target="_blank" class="btn-secondary" title="Ver Blog en vivo">
+          <i class="fa-solid fa-arrow-up-right-from-square"></i> Ver Blog Web
+        </a>
+        <button type="button" class="btn-outline-danger" (click)="logout()">
+          <i class="fa-solid fa-right-from-bracket"></i> Cerrar Sesión
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Container -->
+  <main class="admin-main">
+    
+    <!-- Controls Bar (Buscar, Filtrar, Botón Nueva Noticia) -->
+    <div class="admin-controls-card">
+      <div class="controls-left">
+        
+        <!-- Search -->
+        <div class="search-box">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input 
+            type="text" 
+            [(ngModel)]="searchQuery" 
+            placeholder="Buscar noticias por título o contenido...">
+        </div>
+
+        <!-- Filter Category -->
+        <div class="filter-dropdown">
+          <select [(ngModel)]="selectedCategoryFilter">
+            <option value="all">Todas las categorías</option>
+            <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
+          </select>
+        </div>
+
+      </div>
+
+      <div class="controls-right">
+        <button type="button" class="btn-primary btn-new" (click)="openCreateModal()">
+          <i class="fa-solid fa-plus"></i> Nueva Noticia
+        </button>
+      </div>
+    </div>
+
+    <!-- Stats Bar -->
+    <div class="admin-stats-row">
+      <div class="stat-pill">
+        <strong>{{ posts.length }}</strong> noticias en total
+      </div>
+      <div class="stat-pill">
+        Mostrando <strong>{{ filteredPosts.length }}</strong> resultados
+      </div>
+      <div class="stat-pill sync-status" (click)="loadPosts()" title="Clic para recargar">
+        <i class="fa-solid fa-arrows-rotate" [class.fa-spin]="isLoading"></i> Sincronizado
+      </div>
+    </div>
+
+    <!-- Loading State -->
+    <div class="admin-loading" *ngIf="isLoading">
+      <i class="fa-solid fa-spinner fa-spin"></i>
+      <p>Cargando noticias desde Supabase...</p>
+    </div>
+
+    <!-- Empty State -->
+    <div class="admin-empty" *ngIf="!isLoading && filteredPosts.length === 0">
+      <div class="empty-icon">
+        <i class="fa-regular fa-newspaper"></i>
+      </div>
+      <h3>No se encontraron noticias</h3>
+      <p *ngIf="searchQuery || selectedCategoryFilter !== 'all'">Prueba cambiando los filtros de búsqueda.</p>
+      <p *ngIf="!searchQuery && selectedCategoryFilter === 'all'">Aún no has creado ninguna noticia. ¡Publica tu primer artículo!</p>
+      <button type="button" class="btn-primary" (click)="openCreateModal()" *ngIf="!searchQuery && selectedCategoryFilter === 'all'">
+        <i class="fa-solid fa-plus"></i> Publicar Noticia
+      </button>
+    </div>
+
+    <!-- Post Grid / List -->
+    <div class="admin-posts-grid" *ngIf="!isLoading && filteredPosts.length > 0">
+      
+      <div class="admin-post-card" *ngFor="let post of filteredPosts">
+        <div class="card-media">
+          <img [src]="blogService.getImageUrl(post.image)" [alt]="post.title" loading="lazy">
+          <span class="card-badge">{{ post.category }}</span>
+        </div>
+
+        <div class="card-body">
+          <div class="card-meta">
+            <i class="fa-regular fa-calendar"></i> {{ post.date }}
+            <span class="card-link-badge" *ngIf="post.link" title="Tiene enlace externo">
+              <i class="fa-solid fa-link"></i> Link
+            </span>
+          </div>
+          <h3 class="card-title" [title]="post.title">{{ post.title }}</h3>
+          <p class="card-desc">{{ post.desc }}</p>
+          <div class="card-link-preview" *ngIf="post.link">
+            <a [href]="post.link" target="_blank" rel="noopener noreferrer" (click)="$event.stopPropagation()">
+              <i class="fa-solid fa-arrow-up-right-from-square"></i> {{ post.link }}
+            </a>
+          </div>
+        </div>
+
+        <div class="card-footer">
+          <button type="button" class="btn-icon-action btn-edit" (click)="openEditModal(post)" title="Editar Noticia">
+            <i class="fa-solid fa-pen-to-square"></i> Editar
+          </button>
+          <button type="button" class="btn-icon-action btn-delete" (click)="confirmDelete(post)" title="Eliminar Noticia">
+            <i class="fa-solid fa-trash-can"></i> Eliminar
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+</div>
+
+<!-- ========================================================================= -->
+<!-- 3. MODAL CREAR / EDITAR NOTICIA                                           -->
+<!-- ========================================================================= -->
+<div class="admin-modal-overlay" *ngIf="isModalOpen" (click)="closeModal()">
+  <div class="admin-modal-container" (click)="$event.stopPropagation()">
+    
+    <div class="modal-header">
+      <h2>{{ isEditing ? 'Editar Noticia' : 'Publicar Nueva Noticia' }}</h2>
+      <button type="button" class="btn-close-modal" (click)="closeModal()">&times;</button>
+    </div>
+
+    <form (ngSubmit)="savePost()" class="modal-body">
+      
+      <!-- Título -->
+      <div class="form-group">
+        <label for="postTitle">Título del Artículo *</label>
+        <input 
+          type="text" 
+          id="postTitle" 
+          [(ngModel)]="postForm.title" 
+          name="postTitle" 
+          placeholder="Ej: Nuevas normativas de SUNAFIL para MYPEs en 2026" 
+          required>
+      </div>
+
+      <!-- Fila Categoría y Fecha -->
+      <div class="form-row-2">
+        <div class="form-group">
+          <label for="postCategory">Categoría *</label>
+          <select id="postCategory" [(ngModel)]="postForm.category" name="postCategory" required>
+            <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="postDate">Fecha de Publicación *</label>
+          <input 
+            type="text" 
+            id="postDate" 
+            [(ngModel)]="postForm.date" 
+            name="postDate" 
+            placeholder="Ej: 05 Oct, 2026" 
+            required>
+        </div>
+      </div>
+
+      <!-- Resumen / Contenido -->
+      <div class="form-group">
+        <label for="postDesc">Resumen / Contenido del Artículo *</label>
+        <textarea 
+          id="postDesc" 
+          rows="4" 
+          [(ngModel)]="postForm.desc" 
+          name="postDesc" 
+          placeholder="Describe los puntos clave del artículo..." 
+          required></textarea>
+      </div>
+
+      <!-- Enlace a Noticia Completa -->
+      <div class="form-group">
+        <label for="postLink">
+          Enlace a la Noticia Completa (Opcional)
+          <span style="font-size: 11.5px; font-weight: normal; color: #64748b;">(Ej: link de diario, portal de noticias o PDF)</span>
+        </label>
+        <div class="input-with-icon-plain">
+          <i class="fa-solid fa-link"></i>
+          <input 
+            type="url" 
+            id="postLink" 
+            [(ngModel)]="postForm.link" 
+            name="postLink" 
+            placeholder="https://ejemplo.com/noticia-completa">
+        </div>
+      </div>
+
+      <!-- Subida de Imagen -->
+      <div class="form-group">
+        <label>Imagen de la Noticia</label>
+        <div class="image-upload-wrapper">
+          
+          <label class="image-dropzone" for="imageInput">
+            <i class="fa-solid fa-cloud-arrow-up"></i>
+            <span class="dropzone-text">Haz clic aquí para <strong>subir una imagen</strong> desde tu dispositivo</span>
+            <span class="dropzone-hint">Formatos soportados: WEBP, PNG, JPG (máx. 5MB)</span>
+            <input 
+              type="file" 
+              id="imageInput" 
+              (change)="onFileSelected($event)" 
+              accept="image/*" 
+              style="display: none;">
+          </label>
+
+          <!-- Preview de la imagen -->
+          <div class="image-preview-box" *ngIf="imagePreview">
+            <img [src]="imagePreview" alt="Vista previa">
+            <span class="preview-label">Vista Previa</span>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Footer Modal -->
+      <div class="modal-footer">
+        <button type="button" class="btn-secondary" (click)="closeModal()" [disabled]="isSaving">
+          Cancelar
+        </button>
+        <button type="submit" class="btn-primary" [disabled]="isSaving">
+          <i class="fa-solid fa-spinner fa-spin" *ngIf="isSaving"></i>
+          <span>{{ isSaving ? (isUploading ? 'Subiendo imagen...' : 'Guardando...') : (isEditing ? 'Actualizar Noticia' : 'Publicar Noticia') }}</span>
+        </button>
+      </div>
+
+    </form>
+
+  </div>
+</div>
+
+<!-- ========================================================================= -->
+<!-- 4. MODAL CONFIRMAR ELIMINACIÓN                                            -->
+<!-- ========================================================================= -->
+<div class="admin-modal-overlay" *ngIf="isDeleteModalOpen" (click)="closeDeleteModal()">
+  <div class="admin-modal-container modal-sm" (click)="$event.stopPropagation()">
+    
+    <div class="modal-header">
+      <h2 style="color: #dc2626;"><i class="fa-solid fa-triangle-exclamation"></i> ¿Eliminar Noticia?</h2>
+      <button type="button" class="btn-close-modal" (click)="closeDeleteModal()">&times;</button>
+    </div>
+
+    <div class="modal-body">
+      <p>¿Estás seguro de que deseas eliminar la noticia:</p>
+      <blockquote class="delete-preview-title">"{{ postToDelete?.title }}"</blockquote>
+      <p style="color: #64748b; font-size: 13px;">Esta acción no se puede deshacer y el artículo desaparecerá del blog web.</p>
+    </div>
+
+    <div class="modal-footer">
+      <button type="button" class="btn-secondary" (click)="closeDeleteModal()" [disabled]="isDeleting">
+        Cancelar
+      </button>
+      <button type="button" class="btn-danger" (click)="deletePost()" [disabled]="isDeleting">
+        <i class="fa-solid fa-spinner fa-spin" *ngIf="isDeleting"></i>
+        <span>{{ isDeleting ? 'Eliminando...' : 'Sí, Eliminar' }}</span>
+      </button>
+    </div>
+
+  </div>
+</div>

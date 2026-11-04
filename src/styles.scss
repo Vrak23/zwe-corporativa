@@ -1,0 +1,44 @@
+@import '@fortawesome/fontawesome-free/css/all.min.css';
+@import './divi-core.scss';
+@import './enhancements.scss';
+@import './animations.scss';
+
+// Normalization so the original Divi layout renders accurately
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  font-family: 'Poppins', Helvetica, Arial, Lucida, sans-serif;
+  color: #475569;
+  background-color: #ffffff;
+  -webkit-font-smoothing: antialiased;
+}
+
+#page-container {
+  padding-top: 0 !important;
+  margin-top: 0 !important;
+  overflow-x: clip;
+}
+
+.et_pb_section {
+  position: relative;
+  background-position: 50%;
+  background-size: cover;
+}
+
+.et_pb_row {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+a {
+  text-decoration: none;
+}
+
+.mobile_menu_bar {
+  cursor: pointer;
+}
+
+.et_flex_section, .et_flex_row {
+  display: flex;
+}

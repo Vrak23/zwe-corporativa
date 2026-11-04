@@ -1,0 +1,8 @@
+# robots.txt para https://www.zwecorporativa.com
+User-agent: *
+Allow: /
+Disallow: /admin-blog
+Disallow: /api/
+
+# Sitemap XML oficial para rastreo e indexación de Google
+Sitemap: https://www.zwecorporativa.com/sitemap.xml

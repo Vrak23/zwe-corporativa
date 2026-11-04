@@ -1,0 +1,283 @@
+// =============================================================================
+// CONTACTO — ZWE Corporativa (Responsive)
+// =============================================================================
+
+$blue-dark:  #233158;
+$blue-card:  #1e2d52;
+$yellow:     #fcbb07;
+$cyan:       #5da4d6;
+
+*, *::before, *::after { box-sizing: border-box; }
+
+.contact-page {
+  min-height: 100vh;
+  background-image: url('/assets/images/backgrounds/contacto-fondo.webp');
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  display: flex;
+  align-items: center;
+
+  @media (max-width: 768px) { min-height: auto; align-items: flex-start; }
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(20,30,65,0.78);
+  }
+}
+
+.contact-layout {
+  position: relative;
+  z-index: 1;
+  max-width: 1140px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 70px 40px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+
+  @media (max-width: 1024px) { gap: 40px; padding: 60px 32px; }
+  @media (max-width: 900px)  {
+    grid-template-columns: 1fr;
+    gap: 32px;
+    padding: 48px 24px;
+  }
+  @media (max-width: 480px)  { padding: 36px 16px; }
+}
+
+// COLUMNA IZQUIERDA
+.contact-left {
+  h1 {
+    color: #fff;
+    font-size: 42px;
+    font-weight: 900;
+    margin: 0 0 18px;
+
+    @media (max-width: 768px) { font-size: 30px; }
+    @media (max-width: 480px) { font-size: 26px; margin-bottom: 12px; }
+  }
+
+  .contact-desc {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 15px;
+    line-height: 1.7;
+    margin: 0 0 32px;
+    strong { color: #ffffff; font-weight: 700; }
+
+    @media (max-width: 480px) { font-size: 13.5px; margin-bottom: 24px; }
+  }
+}
+
+.contact-info-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  li {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 14.5px;
+
+    @media (max-width: 480px) { font-size: 13.5px; gap: 10px; }
+  }
+
+  i {
+    font-size: 18px;
+    color: $yellow;
+    width: 22px;
+    text-align: center;
+    flex-shrink: 0;
+  }
+
+  a {
+    color: $cyan;
+    text-decoration: none;
+    word-break: break-all;
+    &:hover { text-decoration: underline; }
+  }
+}
+
+// COLUMNA DERECHA — formulario
+.contact-form-card {
+  background: $blue-card;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 0;
+  padding: 32px 28px;
+
+  @media (max-width: 520px) { padding: 24px 16px; }
+}
+
+.form-alert {
+  display: flex;
+  gap: 16px;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 4px;
+  align-items: flex-start;
+
+  .alert-icon i {
+    font-size: 28px;
+  }
+
+  .alert-content {
+    h4 {
+      margin: 0 0 6px;
+      font-size: 16px;
+      font-weight: 700;
+    }
+    p {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+  }
+
+  &.form-alert-success {
+    background: rgba(16, 185, 129, 0.15);
+    border: 1px solid rgba(16, 185, 129, 0.4);
+    color: #34d399;
+    .alert-icon i { color: #10b981; }
+    .alert-content h4 { color: #ffffff; }
+    .alert-content p { color: #d1fae5; }
+  }
+
+  &.form-alert-error {
+    background: rgba(239, 68, 68, 0.15);
+    border: 1px solid rgba(239, 68, 68, 0.4);
+    color: #f87171;
+    .alert-icon i { color: #ef4444; }
+    .alert-content h4 { color: #ffffff; }
+    .alert-content p { color: #fee2e2; }
+  }
+}
+
+.btn-nuevo-mensaje {
+  margin-top: 14px;
+  background: $yellow;
+  color: $blue-dark;
+  font-weight: 700;
+  border: none;
+  padding: 9px 18px;
+  font-size: 13.5px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background: #f9a800;
+  }
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 12px;
+
+  @media (max-width: 520px) { grid-template-columns: 1fr; gap: 10px; }
+}
+
+.form-field {
+  margin-bottom: 12px;
+
+  &:last-child { margin-bottom: 0; }
+
+  input, select, textarea {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 0;
+    padding: 12px 14px;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 14.5px;
+    font-family: inherit;
+    outline: none;
+    transition: border-color 0.2s, background 0.2s;
+
+    &::placeholder { color: rgba(255, 255, 255, 0.45); }
+    &:focus { border-color: $cyan; background: rgba(255, 255, 255, 0.12); }
+    &:disabled { opacity: 0.6; cursor: not-allowed; }
+
+    @media (max-width: 768px) {
+      font-size: 16px; // Prevents iOS auto-zoom on input focus
+      padding: 12px 14px;
+    }
+  }
+
+  select {
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='rgba(255,255,255,0.5)' stroke-width='2' fill='none'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    padding-right: 36px;
+    option { background: $blue-card; color: #fff; }
+  }
+
+  textarea { resize: vertical; min-height: 110px; }
+}
+
+.form-submit-row {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 4px;
+
+  @media (max-width: 480px) {
+    justify-content: stretch;
+    width: 100%;
+  }
+}
+
+.btn-enviar {
+  background: $yellow;
+  color: $blue-dark;
+  font-size: 14.5px;
+  font-weight: 700;
+  padding: 13px 36px;
+  border: none;
+  border-radius: 0;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 48px;
+  transition: background-color 0.2s ease, opacity 0.2s ease;
+
+  &:hover:not(:disabled) { background: #f9a800; }
+  &:disabled { opacity: 0.7; cursor: not-allowed; }
+
+  @media (max-width: 480px) {
+    width: 100%;
+    padding: 13px 20px;
+    font-size: 15px;
+  }
+}
+
+// MAPA
+.contact-map {
+  width: 100%;
+  overflow: hidden;
+
+  iframe {
+    display: block;
+    width: 100%;
+    height: 420px;
+
+    @media (max-width: 768px) {
+      height: 320px;
+    }
+
+    @media (max-width: 480px) {
+      height: 260px;
+    }
+  }
+}

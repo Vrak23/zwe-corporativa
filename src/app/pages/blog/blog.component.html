@@ -1,0 +1,64 @@
+<!-- ── BANNER BLOG ───────────────────────────────────── -->
+<div class="page-banner">
+  <div class="container reveal-up">
+    <h1>Blog de Contabilidad y Finanzas</h1>
+    <p>Noticias, normativas de SUNAT, SUNAFIL y estrategias financieras para empresas.</p>
+  </div>
+</div>
+
+<!-- ── LISTA DE ARTÍCULOS ─────────────────────────────── -->
+<section class="blog-section">
+  <div class="container">
+
+    <!-- Filtros de categoría -->
+    <nav class="blog-categories reveal-up delay-1" aria-label="Categorías del blog">
+      <button 
+        type="button" 
+        class="category-btn" 
+        [class.active]="selectedCategory === 'all'"
+        (click)="filterCategory('all')">
+        Todos
+      </button>
+      <button 
+        type="button" 
+        class="category-btn" 
+        *ngFor="let cat of categories"
+        [class.active]="selectedCategory === cat"
+        (click)="filterCategory(cat)">
+        {{ cat }}
+      </button>
+    </nav>
+
+    <!-- Grid de posts -->
+    <div class="blog-grid">
+      <article 
+        class="blog-card" 
+        *ngFor="let post of filteredPosts"
+        [class.is-clickable]="post.link"
+        (click)="openPostLink(post)">
+        <div class="blog-card-media">
+          <img [src]="blogService.getImageUrl(post.image)" [alt]="post.title" class="blog-card-img" loading="lazy">
+          <span class="blog-card-date">
+            <i class="fa-regular fa-calendar"></i> {{ post.date }}
+          </span>
+        </div>
+
+        <div class="blog-card-content">
+          <span class="blog-card-tag">{{ post.category }}</span>
+          <h2 class="blog-card-title">{{ post.title }}</h2>
+          <p class="blog-card-excerpt">{{ post.desc }}</p>
+
+          <div class="blog-card-link-btn" *ngIf="post.link">
+            <span>Leer noticia completa <i class="fa-solid fa-arrow-right"></i></span>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <!-- Mensaje si no hay posts filtrados -->
+    <div class="blog-empty reveal-fade" *ngIf="filteredPosts.length === 0">
+      <p>No se encontraron artículos en esta categoría.</p>
+    </div>
+
+  </div>
+</section>
