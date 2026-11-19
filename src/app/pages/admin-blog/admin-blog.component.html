@@ -96,6 +96,16 @@
           </select>
         </div>
 
+        <!-- Filter Company -->
+        <div class="filter-dropdown">
+          <select [(ngModel)]="selectedCompanyFilter">
+            <option value="all">Todos los destinos</option>
+            <option value="ambas">Ambas webs</option>
+            <option value="zwe">Solo ZWE</option>
+            <option value="aura">Solo Aura</option>
+          </select>
+        </div>
+
       </div>
 
       <div class="controls-right">
@@ -144,6 +154,10 @@
         <div class="card-media">
           <img [src]="blogService.getImageUrl(post.image)" [alt]="post.title" loading="lazy">
           <span class="card-badge">{{ post.category }}</span>
+          <span class="card-badge-empresa" [ngClass]="'badge-' + (post.empresa || 'ambas')">
+            <i class="fa-solid" [ngClass]="(post.empresa || 'ambas') === 'ambas' ? 'fa-globe' : ((post.empresa || 'ambas') === 'zwe' ? 'fa-building' : 'fa-briefcase')"></i>
+            {{ getEmpresaLabel(post.empresa) }}
+          </span>
         </div>
 
         <div class="card-body">
@@ -222,6 +236,16 @@
             placeholder="Ej: 05 Oct, 2026" 
             required>
         </div>
+      </div>
+
+      <!-- Destino de Publicación (Empresa / Visibilidad) -->
+      <div class="form-group">
+        <label for="postEmpresa">Publicar en (Visibilidad) *</label>
+        <select id="postEmpresa" [(ngModel)]="postForm.empresa" name="postEmpresa" required>
+          <option value="ambas">🌐 Ambas páginas (ZWE y Aura Corporativa) - Recomendado</option>
+          <option value="zwe">🏢 Solo ZWE Corporativa</option>
+          <option value="aura">💼 Solo Aura Corporativa</option>
+        </select>
       </div>
 
       <!-- Resumen / Contenido -->

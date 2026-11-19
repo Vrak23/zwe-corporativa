@@ -24,6 +24,7 @@ export class AdminBlogComponent implements OnInit {
   isUploading = false;
   searchQuery = '';
   selectedCategoryFilter = 'all';
+  selectedCompanyFilter = 'all';
 
   categories: string[] = ['Laboral', 'Finanzas', 'Tributario', 'Contabilidad'];
 
@@ -45,6 +46,7 @@ export class AdminBlogComponent implements OnInit {
     desc: string;
     image: string;
     link: string;
+    empresa: string;
   } = this.getEmptyForm();
 
   // Modal Eliminar
@@ -91,7 +93,7 @@ export class AdminBlogComponent implements OnInit {
     this.isLoading = true;
     this.cdr.detectChanges();
     try {
-      this.posts = await this.blogService.getPosts();
+      this.posts = await this.blogService.getAllPosts();
     } catch (err: any) {
       this.showToast('Error al cargar noticias: ' + (err.message || 'Error desconocido'), 'error');
     } finally {
@@ -103,10 +105,11 @@ export class AdminBlogComponent implements OnInit {
   get filteredPosts(): BlogPost[] {
     return this.posts.filter(p => {
       const matchCat = this.selectedCategoryFilter === 'all' || p.category.toLowerCase() === this.selectedCategoryFilter.toLowerCase();
+      const matchCompany = this.selectedCompanyFilter === 'all' || (p.empresa || 'ambas').toLowerCase() === this.selectedCompanyFilter.toLowerCase();
       const matchSearch = !this.searchQuery || 
         p.title.toLowerCase().includes(this.searchQuery.toLowerCase()) || 
         p.desc.toLowerCase().includes(this.searchQuery.toLowerCase());
-      return matchCat && matchSearch;
+      return matchCat && matchCompany && matchSearch;
     });
   }
 
@@ -129,7 +132,8 @@ export class AdminBlogComponent implements OnInit {
       date: post.date,
       desc: post.desc,
       image: post.image,
-      link: post.link || ''
+      link: post.link || '',
+      empresa: post.empresa || 'ambas'
     };
     this.selectedFile = null;
     this.imagePreview = this.blogService.getImageUrl(post.image);
@@ -151,8 +155,16 @@ export class AdminBlogComponent implements OnInit {
       date: this.getTodayFormatted(),
       desc: '',
       image: '',
-      link: ''
+      link: '',
+      empresa: 'ambas'
     };
+  }
+
+  getEmpresaLabel(empresa?: string): string {
+    const val = (empresa || 'ambas').toLowerCase();
+    if (val === 'zwe') return 'Solo ZWE';
+    if (val === 'aura') return 'Solo Aura';
+    return 'Ambas webs';
   }
 
   getTodayFormatted(): string {
@@ -217,7 +229,8 @@ export class AdminBlogComponent implements OnInit {
           date: this.postForm.date.trim(),
           desc: this.postForm.desc.trim(),
           image: finalImageUrl,
-          link: this.postForm.link.trim()
+          link: this.postForm.link.trim(),
+          empresa: this.postForm.empresa || 'ambas'
         });
         this.showToast('¡Noticia actualizada exitosamente!', 'success');
       } else {
@@ -227,7 +240,8 @@ export class AdminBlogComponent implements OnInit {
           date: this.postForm.date.trim(),
           desc: this.postForm.desc.trim(),
           image: finalImageUrl,
-          link: this.postForm.link.trim()
+          link: this.postForm.link.trim(),
+          empresa: this.postForm.empresa || 'ambas'
         });
         this.showToast('¡Nueva noticia publicada con éxito!', 'success');
       }

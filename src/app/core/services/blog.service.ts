@@ -10,6 +10,7 @@ export interface BlogPost {
   image: string;
   link?: string;
   created_at?: string;
+  empresa?: string;
 }
 
 @Injectable({
@@ -65,15 +66,15 @@ export class BlogService {
   }
 
   /**
-   * Obtiene todos los posts ordenados de más reciente a más antiguo
+   * Obtiene los posts visibles para ZWE (específicos de ZWE, Ambas o sin asignar)
    */
   async getPosts(): Promise<BlogPost[]> {
     try {
-      // Promise with 5s timeout to prevent hanging
+      // Promise with 6s timeout to prevent hanging
       const fetchPromise = this.supabase
         .from('posts')
         .select('*')
-        .or('empresa.eq.zwe,empresa.is.null')
+        .or('empresa.eq.zwe,empresa.eq.ambas,empresa.eq.todas,empresa.is.null')
         .order('id', { ascending: false });
 
       const timeoutPromise = new Promise<{ data: null, error: any }>((_, reject) =>
@@ -100,12 +101,44 @@ export class BlogService {
   }
 
   /**
-   * Agrega un nuevo post
+   * Obtiene todos los posts de la base de datos para administración centralizada
+   */
+  async getAllPosts(): Promise<BlogPost[]> {
+    try {
+      const fetchPromise = this.supabase
+        .from('posts')
+        .select('*')
+        .order('id', { ascending: false });
+
+      const timeoutPromise = new Promise<{ data: null, error: any }>((_, reject) =>
+        setTimeout(() => reject(new Error('Timeout Supabase')), 6000)
+      );
+
+      const { data, error } = await Promise.race([fetchPromise, timeoutPromise]) as any;
+
+      if (error) {
+        console.warn('Supabase fetch issue, using fallback:', error);
+        return this.defaultPosts;
+      }
+
+      if (data && data.length > 0) {
+        return data;
+      }
+
+      return this.defaultPosts;
+    } catch (err) {
+      console.warn('Network error fetching all posts:', err);
+      return this.defaultPosts;
+    }
+  }
+
+  /**
+   * Agrega un nuevo post (por defecto empresa = 'ambas' para sincronizar con Aura y ZWE)
    */
   async addPost(post: Omit<BlogPost, 'id' | 'created_at'>): Promise<BlogPost> {
     const { data, error } = await this.supabase
       .from('posts')
-      .insert([{ ...post, empresa: 'zwe' }])
+      .insert([{ ...post, empresa: post.empresa || 'ambas' }])
       .select()
       .single();
 
@@ -122,7 +155,7 @@ export class BlogService {
   async updatePost(id: number, post: Partial<BlogPost>): Promise<BlogPost> {
     const { data, error } = await this.supabase
       .from('posts')
-      .update({ ...post, empresa: 'zwe' })
+      .update(post)
       .eq('id', id)
       .select()
       .single();
