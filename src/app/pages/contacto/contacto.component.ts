@@ -13,13 +13,13 @@ import { HttpClient } from '@angular/common/http';
 export class ContactoComponent {
 
   formData = {
-    nombre:   '',
-    correo:   '',
+    nombre: '',
+    correo: '',
     telefono: '',
-    ruc:      '',
+    ruc: '',
     servicio: '',
-    mensaje:  '',
-    _gotcha:  ''
+    mensaje: '',
+    _gotcha: ''
   };
 
   isSubmitting = false;
@@ -27,7 +27,7 @@ export class ContactoComponent {
   errorMessage = '';
   successMessage = '';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   submitForm() {
     if (!this.formData.nombre || !this.formData.correo || !this.formData.telefono || !this.formData.servicio || !this.formData.mensaje) {
@@ -91,13 +91,13 @@ export class ContactoComponent {
 
   resetForm() {
     this.formData = {
-      nombre:   '',
-      correo:   '',
+      nombre: '',
+      correo: '',
       telefono: '',
-      ruc:      '',
+      ruc: '',
       servicio: '',
-      mensaje:  '',
-      _gotcha:  ''
+      mensaje: '',
+      _gotcha: ''
     };
   }
 }

@@ -72,7 +72,7 @@ export class ScrollAnimationService {
 
     this.ngZone.runOutsideAngular(() => {
       const elements = document.querySelectorAll(
-        '.reveal-on-scroll:not(.is-revealed), .reveal-up:not(.is-revealed), .reveal-left:not(.is-revealed), .reveal-right:not(.is-revealed), .reveal-zoom:not(.is-revealed), .reveal-fade:not(.is-revealed), [data-reveal]:not(.is-revealed)'
+        '.reveal-on-scroll:not(.is-revealed), .reveal-up:not(.is-revealed), .reveal-down:not(.is-revealed), .reveal-left:not(.is-revealed), .reveal-right:not(.is-revealed), .reveal-zoom:not(.is-revealed), .reveal-fade:not(.is-revealed), [data-reveal]:not(.is-revealed)'
       );
 
       elements.forEach(el => {

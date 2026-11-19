@@ -2,9 +2,9 @@
 // ADMIN BLOG COMPONENT STYLES — ZWE Corporativa
 // =============================================================================
 
-$blue-dark:   #233158;
+$blue-dark:   #051a57;
 $blue-header: #192442;
-$blue-mid:    #003d6b;
+$blue-mid:    #051a57;
 $blue-accent: #2563eb;
 $yellow:      #fcbb07;
 $text-dark:   #1e293b;
@@ -437,7 +437,7 @@ $success:     #10b981;
       position: absolute;
       top: 12px;
       right: 12px;
-      background: rgba(35, 49, 88, 0.95);
+      background: rgba(5, 26, 87, 0.95);
       color: #ffffff;
       font-size: 11px;
       font-weight: 700;
@@ -679,7 +679,7 @@ $success:     #10b981;
 
     &:focus {
       border-color: $blue-dark;
-      box-shadow: 0 0 0 3px rgba(35, 49, 88, 0.1);
+      box-shadow: 0 0 0 3px rgba(5, 26, 87, 0.1);
     }
   }
 
@@ -799,7 +799,7 @@ $success:     #10b981;
   transition: background-color 0.2s;
 
   &:hover {
-    background: #172445;
+    background: #092168;
   }
 
   &:disabled {

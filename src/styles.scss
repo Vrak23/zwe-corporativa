@@ -1,44 +1,426 @@
-@import '@fortawesome/fontawesome-free/css/all.min.css';
-@import './divi-core.scss';
-@import './enhancements.scss';
-@import './animations.scss';
+@use '@fortawesome/fontawesome-free/css/all.min.css';
+@use './enhancements.scss';
+@use './animations.scss';
 
-// Normalization so the original Divi layout renders accurately
-html, body {
+// =============================================================================
+// ZWE CORPORATIVA — UNIFIED ARCHITECTURAL DESIGN SYSTEM
+// Inspired by Swiss-editorial precision & ZWE brand identity (#051a57 + #fcbb07)
+// =============================================================================
+
+@property --fade-start {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+
+@property --fade-end {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+
+:root {
+  // Progressive enhancement for native intrinsic-height transitions (accordions/FAQs)
+  interpolate-size: allow-keywords;
+
+  // Surface & Canvas Tokens
+  --zwe-paper: #fafaf8;
+  --zwe-surface: #ffffff;
+  --zwe-subtle: #edf1f7;
+  --zwe-navy: #051a57;
+  --zwe-navy-deep: #031138;
+  --zwe-navy-mid: #0a246d;
+
+  // Ink & Typography Tokens
+  --zwe-ink: #07143a;
+  --zwe-ink-body: #334155;
+  --zwe-ink-muted: #475569;
+  --zwe-ink-subtle: #64748b;
+
+  // Brand Accent Tokens
+  --zwe-gold: #fcbb07;
+  --zwe-gold-hover: #eab000;
+  --zwe-gold-soft: rgba(252, 187, 7, 0.14);
+  --zwe-emerald: #10b981;
+  --zwe-blue-accent: #3b68af;
+
+  // Hairline Borders & Dividers
+  --zwe-border: rgba(5, 26, 87, 0.11);
+  --zwe-border-strong: rgba(5, 26, 87, 0.22);
+  --zwe-border-dark: rgba(255, 255, 255, 0.14);
+  --zwe-border-dark-strong: rgba(255, 255, 255, 0.28);
+
+  // Typography Families
+  --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-serif: 'Instrument Serif', Georgia, serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  // Radii & Motion (Normal, professional rectangular corners)
+  --radius-sm: 4px;
+  --radius-md: 4px;
+  --radius-lg: 4px;
+  --radius-pill: 4px;
+  --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+
+  // Color interpolation space fallback
+  --in-oklab: ;
+}
+
+@supports (background: linear-gradient(in oklab, white, black)) {
+  :root {
+    --in-oklab: in oklab;
+  }
+}
+
+html,
+body {
   margin: 0;
   padding: 0;
   width: 100%;
-  font-family: 'Poppins', Helvetica, Arial, Lucida, sans-serif;
-  color: #475569;
-  background-color: #ffffff;
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--zwe-ink-body);
+  background-color: var(--zwe-paper);
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+// Subtle editorial paper grain overlay across the page
+body.zwe-body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9998;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
 #page-container {
-  padding-top: 0 !important;
-  margin-top: 0 !important;
   overflow-x: clip;
-}
-
-.et_pb_section {
   position: relative;
-  background-position: 50%;
-  background-size: cover;
 }
 
-.et_pb_row {
-  margin-left: auto;
-  margin-right: auto;
+// Typography Balance & Readability (Modern Web Guidance)
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-sans);
+  color: var(--zwe-ink);
+  text-wrap: balance;
+  letter-spacing: -0.025em;
+}
+
+p, li, blockquote {
+  text-wrap: pretty;
 }
 
 a {
   text-decoration: none;
+  color: inherit;
 }
 
-.mobile_menu_bar {
+// Accessible Focus Indicators
+:where(a:any-link, button, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: 2px solid var(--zwe-navy);
+  outline-offset: 3px;
+}
+
+// Visually hidden utility (accessible skip links & labels)
+.visually-hidden:where(:not(:focus-within, :active)) {
+  position: absolute !important;
+  clip-path: inset(50%) !important;
+  overflow: hidden !important;
+  width: 1px !important;
+  height: 1px !important;
+  margin: -1px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  white-space: nowrap !important;
+}
+
+.skip-link:focus {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: 10000;
+  background: var(--zwe-navy);
+  color: #ffffff;
+  padding: 10px 18px;
+  border-radius: var(--radius-pill);
+  font-size: 0.875rem;
+  font-weight: 700;
+  box-shadow: 0 10px 30px rgba(5, 26, 87, 0.3);
+}
+
+// =============================================================================
+// SHARED ARCHITECTURAL UTILITIES
+// =============================================================================
+
+.zwe-container {
+  width: 100%;
+  max-width: 1280px;
+  margin-inline: auto;
+  padding-inline: 32px;
+
+  @media (max-width: 768px) {
+    padding-inline: 20px;
+  }
+
+  @media (max-width: 480px) {
+    padding-inline: 16px;
+  }
+}
+
+.zwe-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--zwe-ink-subtle);
+
+  &::before {
+    content: '';
+    width: 24px;
+    height: 1px;
+    background: currentColor;
+    opacity: 0.55;
+  }
+
+  &--light {
+    color: rgba(255, 255, 255, 0.7);
+  }
+}
+
+.zwe-serif-italic {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+
+.zwe-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 5px 12px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--zwe-border);
+  background: var(--zwe-surface);
+  color: var(--zwe-ink);
+
+  .status-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--zwe-emerald);
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+  }
+}
+
+// Architectural Pill Buttons (Hero, Header, CTAs)
+.zwe-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-family: var(--font-sans);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  padding: 13px 26px;
+  min-block-size: 46px;
+  border-radius: var(--radius-pill);
+  border: 1px solid transparent;
   cursor: pointer;
+  transition:
+    background-color 0.22s ease,
+    color 0.22s ease,
+    border-color 0.22s ease,
+    transform 0.22s var(--ease-expo),
+    box-shadow 0.22s ease;
+
+  i {
+    font-size: 0.875em;
+    transition: transform 0.22s var(--ease-expo);
+  }
+
+  &:active:not(:disabled) {
+    transform: scale(0.97);
+  }
+
+  &--gold {
+    background: var(--zwe-gold);
+    color: var(--zwe-navy);
+    box-shadow: 0 6px 20px -4px rgba(252, 187, 7, 0.45);
+
+    &:hover:not(:disabled) {
+      background: var(--zwe-gold-hover);
+      box-shadow: 0 10px 24px -4px rgba(252, 187, 7, 0.55);
+    }
+  }
+
+  &--navy {
+    background: var(--zwe-navy);
+    color: #ffffff;
+    box-shadow: 0 6px 18px -4px rgba(5, 26, 87, 0.28);
+
+    &:hover:not(:disabled) {
+      background: var(--zwe-navy-mid);
+    }
+  }
+
+  &--outline {
+    background: transparent;
+    color: var(--zwe-ink);
+    border-color: var(--zwe-border-strong);
+
+    &:hover:not(:disabled) {
+      background: rgba(5, 26, 87, 0.04);
+      border-color: var(--zwe-navy);
+    }
+  }
+
+  &--outline-light {
+    background: transparent;
+    color: #ffffff;
+    border-color: rgba(255, 255, 255, 0.28);
+
+    &:hover:not(:disabled) {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: #ffffff;
+    }
+  }
 }
 
-.et_flex_section, .et_flex_row {
-  display: flex;
+// Unified Inner Page Architectural Hero Banner
+.zwe-page-hero {
+  position: relative;
+  background-color: var(--zwe-paper);
+  background-image:
+    linear-gradient(to right, rgba(5, 26, 87, 0.045) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(5, 26, 87, 0.045) 1px, transparent 1px);
+  background-size: 56px 56px;
+  border-bottom: 1px solid var(--zwe-border);
+  padding: clamp(3.5rem, 6vw, 5.5rem) 0 clamp(3rem, 5vw, 4.5rem);
+  overflow: hidden;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 85% 15%, rgba(252, 187, 7, 0.10), transparent 45%);
+    pointer-events: none;
+  }
+
+  .zwe-container {
+    position: relative;
+    z-index: 1;
+  }
+
+  .zwe-eyebrow {
+    margin-bottom: 18px;
+  }
+
+  h1 {
+    font-size: clamp(2.125rem, 4.5vw, 3.5rem);
+    font-weight: 800;
+    line-height: 1.06;
+    letter-spacing: -0.03em;
+    color: var(--zwe-ink);
+    margin: 0 0 18px;
+    max-width: 18ch;
+  }
+
+  p {
+    font-size: clamp(1rem, 1.4vw, 1.1875rem);
+    line-height: 1.65;
+    color: var(--zwe-ink-muted);
+    max-width: 62ch;
+    margin: 0;
+  }
+}
+
+// =============================================================================
+// UNIVERSAL NORMAL (RECTANGULAR) BORDERS FOR BUTTONS & CARDS
+// =============================================================================
+.zwe-btn,
+button.zwe-btn,
+a.zwe-btn,
+.hero-btn-whatsapp,
+.hero-btn-secondary,
+.header-cta-btn,
+.entity-cta,
+.mobile-btn,
+.step-trigger,
+.faq-trigger,
+.service-tab-btn,
+.service-detail-btn,
+.btn-enviar,
+.btn-read-more,
+.category-btn,
+button,
+input,
+select,
+textarea,
+.btn {
+  border-radius: 4px !important;
+}
+
+.diff-card,
+.dark-window-card,
+.entity-card,
+.final-cta-frame,
+.capabilities-visual-card,
+.window-media-banner,
+.diff-card-media,
+.client-logo-card,
+.client-logo-item,
+.service-card,
+.blog-card,
+.team-card,
+.contacto-card,
+.contact-form-card,
+.contact-info-panel,
+.contact-info-card,
+.contact-map-frame,
+.map-frame,
+.mv-block,
+.values-bar-wrapper,
+.pillar-col,
+.about-cta-card,
+.detail-card,
+.sidebar-card,
+.faq-list,
+.faq-item,
+.card {
+  border-radius: 4px !important;
+}
+
+// Universal Motion Freeze on Cards: strictly motionless on hover
+.diff-card,
+.dark-window-card,
+.entity-card,
+.service-card,
+.blog-card,
+.client-logo-card,
+.mv-block,
+.pillar-col,
+.detail-card,
+.sidebar-card,
+.contact-info-panel,
+.contact-form-card,
+.about-cta-card,
+.card {
+  &:hover {
+    transform: none !important;
+  }
+  img {
+    transform: none !important;
+  }
 }

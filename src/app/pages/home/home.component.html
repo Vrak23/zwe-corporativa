@@ -1,201 +1,372 @@
 <!-- ===================================================
-  HOME - ZWE CORPORATIVA (Angular Native, clean HTML)
+  HOME — ZWE CORPORATIVA (Architectural Editorial System)
   =================================================== -->
 
-<!-- ── 1. HERO ───────────────────────────────────────── -->
+<!-- ── 1. ARCHITECTURAL HERO ──────────────────────────────────────────────── -->
 <section class="hero-section">
-  <div class="hero-inner">
-    <!-- Left: text -->
-    <div class="hero-left">
-      <div class="hero-badge-wrap reveal-up delay-1">
-        <span class="hero-badge">ESTUDIO CONTABLE EN <strong>LIMA-PERÚ</strong></span>
-      </div>
+  <div class="hero-stage">
+    <div class="hero-grid-bg" aria-hidden="true"></div>
 
-      <div class="hero-text-wrap reveal-up delay-2">
-        <h1 class="hero-title-main">ESPECIALISTAS EN CONTABILIDAD &amp; OUTSOURCING</h1>
-        <h2 class="hero-title-sub">para PYMES</h2>
-      </div>
-
-      <p class="hero-desc reveal-up delay-3">
-        Con más de 15 años de experiencia, garantizamos la más alta calidad en outsourcing
-        y consultoría contable, tributaria, laboral, financiera y legal corporativa.
-      </p>
-
-      <a class="hero-btn-whatsapp reveal-up delay-4"
-         href="https://api.whatsapp.com/send/?phone=51918663597&text=Hola+%2AZWE+Corporativa%2A.+Necesito+m%C3%A1s+informaci%C3%B3n+sobre+ZWE+Corporativa+https%3A%2F%2Fwww.zwecorporativa.com%2F&type=phone_number&app_absent=0"
-         target="_blank" rel="noopener">
-        <i class="fa-brands fa-whatsapp"></i> Comunícate con un Asesor
-      </a>
-    </div>
-
-    <!-- Right: image -->
-    <div class="hero-right reveal-right delay-2">
+    <!-- Protagonist Right/Background Photo with Smooth Left Gradient Fade -->
+    <div class="hero-bg-media reveal-right delay-1" aria-hidden="true">
       <img src="/assets/images/backgrounds/fondohome.webp"
-           alt="Especialistas en Contabilidad &amp; Outsourcing"
-           class="hero-img floating-elem">
+           alt=""
+           class="hero-bg-img">
+      <div class="hero-bg-fade"></div>
     </div>
-  </div>
-</section>
 
-<!-- ── 2. ¿POR QUÉ ELEGIRNOS? ────────────────────────── -->
-<section class="why-section">
-  <div class="container">
-    <h2 class="why-heading reveal-up">¿Por qué elegirnos?</h2>
-    <div class="why-cards reveal-stagger">
-      <div class="why-card reveal-up" *ngFor="let f of features">
-        <div class="why-icon">
-          <i [class]="f.icon"></i>
+    <div class="hero-radial-glow" aria-hidden="true"></div>
+
+    <div class="zwe-container hero-inner">
+      <!-- Left Column: Editorial Hierarchy -->
+      <div class="hero-left">
+        <div class="hero-meta-row reveal-up">
+          <span class="zwe-eyebrow">Estudio contable en Lima, Perú</span>
         </div>
-        <h4>{{ f.title }}</h4>
-        <p>{{ f.desc }}</p>
-      </div>
-    </div>
-  </div>
-</section>
 
-<!-- ── 3. SERVICIOS ───────────────────────────────────── -->
-<section class="services-section">
-  <div class="container">
-    <!-- Section heading -->
-    <div class="section-heading reveal-up">
-      <h2><em>Servicios que te ayudarán a </em><strong>lograr el éxito de tu negocio</strong>.</h2>
-    </div>
+        <h1 class="hero-title reveal-up delay-1">
+          Especialistas en contabilidad y
+          <span class="hero-focus-wrap">
+            <span class="hero-focus-word zwe-serif-italic" [attr.data-word]="currentHeroWord">
+              {{ currentHeroWord }}
+            </span>
+            <span class="hero-focus-bar" aria-hidden="true"></span>
+          </span>
+        </h1>
 
-    <!-- Services box -->
-    <div class="sm-container">
-      <!-- Tabs -->
-      <div class="sm-tabs-grid reveal-up delay-1">
-        <button 
-          *ngFor="let s of servicesTabs" 
-          class="sm-tab-btn" 
-          [class.active]="tab === s.id" 
-          (click)="tab = s.id">
-          <i [class]="s.icon + ' sm-tab-icon'"></i>
-          <span class="sm-tab-title">{{ s.title }}</span>
-        </button>
-      </div>
-
-      <!-- Content area -->
-      <div class="sm-content-wrapper reveal-zoom delay-2">
-        <ng-container *ngFor="let s of servicesTabs">
-          <div class="sm-text-side" *ngIf="tab === s.id">
-            <span class="sm-service-badge" *ngIf="s.badge">{{ s.badge }}</span>
-            <h3>{{ s.title }}</h3>
-            <p class="sm-service-tagline" *ngIf="s.tagline"><em>{{ s.tagline }}</em></p>
-            <p>{{ s.subtitle }}</p>
-            <ul class="sm-list">
-              <li *ngFor="let b of s.bullets">
-                <span class="sm-check-icon">✓</span> {{ b }}
-              </li>
-            </ul>
-
-            <div class="sm-btn-actions">
-              <a [href]="getQuoteUrl()" target="_blank" rel="noopener" class="sm-btn-cotizar">
-                Cotizar Servicio
-              </a>
-              <a [routerLink]="s.link" class="sm-btn-more">
-                Ver detalle <i class="fa-solid fa-arrow-right"></i>
-              </a>
-            </div>
-          </div>
-        </ng-container>
-
-        <div class="sm-image-side">
-          <img src="/assets/images/services/imagen.webp" alt="Asesora Contable ZWE Corporativa" class="sm-person-img" loading="lazy">
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ── 4. BANNER "EMPECEMOS A TRABAJAR JUNTOS" ───────── -->
-<section class="cta-banner-section">
-  <div class="container">
-    <div class="cta-banner-inner">
-      <div class="cta-banner-left reveal-left">
-        <h2><span><em>Empecemos a</em> </span><strong>TRABAJAR JUNTOS</strong></h2>
-      </div>
-      <div class="cta-banner-right reveal-right delay-1">
-        <p>Sabemos que contar con un asesor contable es importante para el éxito de tu negocio,
-           por ello ZWE Corporativa te ofrecemos la garantía que tu contabilidad estará en buenas
-           manos, para brindarte un soporte integral.
-           <strong>Deja tu contabilidad en nuestras manos y enfócate en las actividades que le dan valor a tu empresa.</strong>
+        <p class="hero-desc reveal-up delay-2">
+          Con más de 15 años de experiencia, transformamos el cumplimiento contable, tributario, laboral, financiero y legal en claridad operativa para que tu empresa escale sin contingencias.
         </p>
-        <a class="cta-btn-contact"
-           href="https://api.whatsapp.com/send/?phone=51918663597&text=Hola+%2AZWE+Corporativa%2A.+Necesito+m%C3%A1s+informaci%C3%B3n+sobre+ZWE+Corporativa+https%3A%2F%2Fwww.zwecorporativa.com%2F&type=phone_number&app_absent=0"
-           target="_blank" rel="noopener">
-          Comunícate con Nosotros
-        </a>
+
+        <div class="hero-cta-row reveal-up delay-3">
+          <a class="zwe-btn zwe-btn--gold"
+             href="https://api.whatsapp.com/send/?phone=51918663597&text=Hola+%2AZWE+Corporativa%2A.+Necesito+m%C3%A1s+informaci%C3%B3n+sobre+ZWE+Corporativa+https%3A%2F%2Fwww.zwecorporativa.com%2F&type=phone_number&app_absent=0"
+             target="_blank"
+             rel="noopener">
+            <i class="fa-brands fa-whatsapp" aria-hidden="true"></i>
+            <span>Comunícate con un Asesor</span>
+          </a>
+          <a routerLink="/servicios" class="zwe-btn zwe-btn--outline hero-btn-secondary">
+            Explorar Servicios
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Architectural Metric Strip -->
+  <div class="hero-ticker-bar">
+    <div class="zwe-container hero-ticker-grid">
+      <div class="ticker-item" *ngFor="let m of heroMetrics">
+        <strong class="ticker-value">{{ m.value }}</strong>
+        <span class="ticker-label">{{ m.label }}</span>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ── 5. CLIENTES ────────────────────────────────────── -->
-<section class="clients-section">
-  <div class="section-heading reveal-up">
-    <h2><em>Más de 150 clientes </em><strong>confían en nosotros</strong></h2>
-  </div>
-
-  <div class="clients-marquee-container reveal-zoom delay-1"
-       (mouseenter)="pauseMarquee = true"
-       (mouseleave)="pauseMarquee = false">
-    <div class="clients-marquee-track" [class.paused]="pauseMarquee">
-      <div class="client-logo-card" *ngFor="let logo of clientLogos">
-        <img [src]="'/assets/images/clients/' + logo" [alt]="logo" loading="lazy">
-      </div>
-      <!-- Duplicated for infinite loop -->
-      <div class="client-logo-card" *ngFor="let logo of clientLogos">
-        <img [src]="'/assets/images/clients/' + logo" [alt]="logo" loading="lazy">
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ── 6. CONSTITUCIÓN DE EMPRESA ────────────────────── -->
-<section class="constitution-section">
-  <div class="constitution-content">
-
-    <!-- Columna izquierda: línea decorativa + título -->
-    <div class="const-col-title reveal-left">
-      <div class="const-accent-line"></div>
-      <h2>
-        <em>¿Estás emprendiendo y deseas</em>
-        <strong>CONSTITUIR TU PROPIA EMPRESA?</strong>
+<!-- ── 2. CAPACIDADES / ¿POR QUÉ ELEGIRNOS? (4-COLUMN EDITORIAL CARDS) ────────── -->
+<section class="capabilities-section">
+  <div class="zwe-container">
+    <div class="section-header reveal-up">
+      <span class="zwe-eyebrow">01 / Diferencial ZWE</span>
+      <h2 class="section-title-split">
+        Todo lo que tu empresa necesita.
+        <span class="muted">Nada genérico.</span>
       </h2>
     </div>
 
-    <!-- Columna derecha: texto + botón -->
-    <div class="const-col-body reveal-right delay-1">
-      <p>En ZWE Corporativa, te ayudamos a formalizar tu negocio.
-         Escoge el tipo de empresa que más te conviene.</p>
-      <a class="const-btn-cta"
-         href="https://api.whatsapp.com/send/?phone=51918663597&text=Hola+%2AZWE+Corporativa%2A.+Necesito+m%C3%A1s+informaci%C3%B3n+sobre+ZWE+Corporativa+https%3A%2F%2Fwww.zwecorporativa.com%2F&type=phone_number&app_absent=0"
-         target="_blank" rel="noopener">
-        Constituye tu Empresa
-      </a>
+    <div class="diff-grid reveal-up delay-1">
+      <article class="diff-card" *ngFor="let f of features">
+        <div class="diff-card-media">
+          <img [src]="f.image" [alt]="f.title" loading="lazy">
+          <span class="diff-card-index">{{ f.index }}</span>
+        </div>
+        <div class="diff-card-body">
+          <h3>{{ f.title }}</h3>
+          <p>{{ f.desc }}</p>
+        </div>
+      </article>
     </div>
-
   </div>
 </section>
 
-<!-- ── 7. FAQ ─────────────────────────────────────────── -->
-<section class="faq-section">
-  <div class="container">
-    <h2 class="faq-heading reveal-up">
-      <em>Preguntas Frecuentes </em><strong>(FAQ)</strong>
-    </h2>
+<!-- ── 3. SERVICIOS INTERACTIVOS (INVERTED DEEP NAVY SECTION) ─────────────── -->
+<section class="services-dark-section">
+  <div class="dark-diagonal-bg" aria-hidden="true"></div>
 
-    <div class="faq-list reveal-stagger">
-      <div class="faq-item reveal-up"
+  <div class="zwe-container services-dark-inner">
+    <div class="services-split-grid">
+      <!-- Left: Header + Interactive Step Selector -->
+      <div class="services-left-col">
+        <div class="section-header section-header--dark reveal-up">
+          <span class="zwe-eyebrow zwe-eyebrow--light">02 / Soluciones Integrales</span>
+          <h2 class="section-title-split section-title-split--light">
+            Cuatro pilares.
+            <span class="muted-light">Un solo equipo aliado.</span>
+          </h2>
+        </div>
+
+        <div class="services-steps-col">
+          <div class="services-tablist" role="tablist" aria-label="Áreas de servicio destacadas">
+            <button *ngFor="let s of servicesTabs; let i = index"
+                    #serviceTabBtn
+                    type="button"
+                    role="tab"
+                    [id]="'service-tab-' + s.id"
+                    [attr.aria-selected]="tab === s.id"
+                    [attr.tabindex]="tab === s.id ? 0 : -1"
+                    class="step-trigger"
+                    [class.is-active]="tab === s.id"
+                    (click)="selectServiceTab(s.id, $event.currentTarget)"
+                    (keydown)="onServiceTabKeydown($event, i)">
+              <span class="step-roman">{{ s.roman }}</span>
+              <div class="step-copy">
+                <strong>{{ s.title }}</strong>
+                <span>{{ s.tagline }}</span>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        <div class="steps-footer-note">
+          <span>¿Buscas contabilidad, tributación o asesoría legal?</span>
+          <a routerLink="/servicios" class="steps-catalog-link">
+            Ver las 9 áreas especializadas
+          </a>
+        </div>
+      </div>
+
+      <!-- Right: Architectural Dark Preview Window (aligned flush with left column) -->
+      <div class="services-window-col">
+        <div *ngFor="let s of servicesTabs; let i = index"
+             role="tabpanel"
+             class="service-tabpanel"
+             [attr.aria-labelledby]="'service-tab-' + s.id"
+             [attr.hidden]="tab === s.id ? null : 'until-found'"
+             (beforematch)="selectServiceTab(s.id, serviceTabBtns.get(i)?.nativeElement)">
+          <div class="dark-window-card">
+            <div class="window-media-banner">
+              <img [src]="s.image" [alt]="s.title" loading="lazy">
+              <div class="window-media-fade" aria-hidden="true"></div>
+            </div>
+
+            <div class="window-body">
+              <div class="window-head">
+                <div>
+                  <h3>{{ s.title }}</h3>
+                  <p class="window-tagline zwe-serif-italic">{{ s.tagline }}</p>
+                </div>
+              </div>
+
+              <p class="window-subtitle">{{ s.subtitle }}</p>
+
+              <ul class="window-checklist" role="list">
+                <li *ngFor="let b of s.bullets; let idx = index">
+                  <span class="line-num">0{{ idx + 1 }}</span>
+                  <span>{{ b }}</span>
+                </li>
+              </ul>
+
+              <div class="window-actions">
+                <a [href]="getQuoteUrl(s.title)"
+                   target="_blank"
+                   rel="noopener"
+                   class="zwe-btn zwe-btn--gold">
+                  Cotizar Servicio
+                </a>
+                <a [routerLink]="s.link" class="zwe-btn zwe-btn--outline-light">
+                  Ver alcance completo
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 4. IMPACTO MEDIBLE (2x2 CROSSHAIR GRID) ───────────────────────────── -->
+<section class="impact-section">
+  <div class="zwe-container">
+    <div class="impact-header reveal-up">
+      <div>
+        <span class="zwe-eyebrow">03 / Impacto Medible</span>
+        <h2 class="section-title-split">
+          Respaldo que se refleja en tus números.
+        </h2>
+      </div>
+
+      <div class="impact-cta-box">
+        <p>
+          Deja tu contabilidad en manos expertas y enfócate en las actividades que generan valor real para tu empresa.
+        </p>
+        <a routerLink="/contacto" class="zwe-btn zwe-btn--navy">
+          Empecemos a Trabajar Juntos
+        </a>
+      </div>
+    </div>
+
+    <div class="crosshair-grid reveal-up delay-1">
+      <div class="crosshair-cell" *ngFor="let item of impactMetrics">
+        <div class="cell-number-row">
+          <span class="cell-value">{{ item.value }}</span>
+          <span class="cell-unit">{{ item.unit }}</span>
+        </div>
+        <p class="cell-desc">{{ item.label }}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 5. PORTAFOLIO DE CLIENTES ─────────────────────────────────────────── -->
+<section class="clients-section">
+  <div class="zwe-container clients-header reveal-up">
+    <div>
+      <span class="zwe-eyebrow">04 / Confianza Empresarial</span>
+      <h2 class="clients-heading">
+        Más de 150 empresas
+        <span class="zwe-serif-italic">confían en nosotros</span>
+      </h2>
+    </div>
+  </div>
+
+  <div class="clients-marquee-container"
+       (mouseenter)="pauseMarquee = true"
+       (mouseleave)="pauseMarquee = false">
+    <div class="clients-marquee-track" [class.paused]="isMarqueePaused">
+      <div class="client-logo-card" *ngFor="let logo of clientLogos">
+        <img [src]="'/assets/images/clients/' + logo" alt="Empresa cliente de ZWE Corporativa" loading="lazy">
+      </div>
+      <div class="client-logo-card" *ngFor="let logo of clientLogos" aria-hidden="true">
+        <img [src]="'/assets/images/clients/' + logo" alt="" loading="lazy">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 6. CONSTITUCIÓN DE EMPRESAS (ARCHITECTURAL WIREFRAME GRID) ─────────── -->
+<section class="constitution-section">
+  <div class="zwe-container">
+    <div class="section-header section-header--centered reveal-up">
+      <span class="zwe-eyebrow">05 / Formalización Empresarial</span>
+      <h2 class="section-title-split">
+        Constituye <span class="zwe-serif-italic">tu empresa</span> con respaldo legal
+      </h2>
+      <p class="section-subtitle">
+        Te asesoramos para elegir el régimen societario más conveniente y gestionamos reserva de nombre, minuta, notaría, SUNARP y RUC.
+      </p>
+    </div>
+
+    <div class="entity-grid reveal-stagger">
+      <article class="entity-card reveal-up"
+               *ngFor="let c of constitutionTypes"
+               [class.is-featured]="c.featured">
+        <span class="entity-featured-badge" *ngIf="c.featured">{{ c.badge }}</span>
+        <div class="entity-top">
+          <span class="entity-index">{{ c.index }}</span>
+          <span class="entity-time">
+            <i class="fa-regular fa-clock" aria-hidden="true"></i> {{ c.time }}
+          </span>
+        </div>
+
+        <h3 class="entity-code">{{ c.type }}</h3>
+        <p class="entity-fullname">{{ c.name }}</p>
+        <p class="entity-desc">{{ c.desc }}</p>
+
+        <ul class="entity-highlights" role="list">
+          <li *ngFor="let h of c.highlights">
+            <i class="fa-solid fa-check" aria-hidden="true"></i>
+            <span>{{ h }}</span>
+          </li>
+        </ul>
+
+        <a [href]="getConstitutionQuoteUrl(c.type, c.name)"
+           target="_blank"
+           rel="noopener"
+           class="entity-cta"
+           [class.entity-cta--featured]="c.featured">
+          Consultar {{ c.type }}
+        </a>
+      </article>
+    </div>
+
+    <!-- Corner-framed Dark CTA Banner (Optimus Final CTA inspiration) -->
+    <div class="final-cta-frame reveal-up delay-1">
+      <span class="corner-mark corner-mark--tr" aria-hidden="true"></span>
+      <span class="corner-mark corner-mark--bl" aria-hidden="true"></span>
+
+      <div class="final-cta-content">
+        <div class="final-cta-left">
+          <span class="zwe-eyebrow zwe-eyebrow--light">Diagnóstico Inicial Sin Costo</span>
+          <h2>
+            ¿Listo para ordenar y blindar
+            <span class="zwe-serif-italic gold-italic">tu empresa?</span>
+          </h2>
+          <p>
+            Agenda una reunión con nuestros contadores y abogados para evaluar tu situación tributaria, laboral o de constitución societaria.
+          </p>
+        </div>
+        <div class="final-cta-actions">
+          <a href="https://api.whatsapp.com/send/?phone=51918663597&text=Hola+%2AZWE+Corporativa%2A.+Deseo+agendar+un+diagn%C3%B3stico+inicial+para+mi+empresa."
+             target="_blank"
+             rel="noopener"
+             class="zwe-btn zwe-btn--gold">
+            Hablar por WhatsApp
+          </a>
+          <a routerLink="/contacto" class="zwe-btn zwe-btn--outline-light">
+            Enviar Consulta
+          </a>
+          <span class="final-cta-note">Respuesta ejecutiva en menos de 24 horas hábiles</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 7. PREGUNTAS FRECUENTES (FAQ) ──────────────────────────────────────── -->
+<section class="faq-section">
+  <div class="zwe-container faq-layout">
+    <div class="faq-intro reveal-up">
+      <span class="zwe-eyebrow">06 / Preguntas Frecuentes</span>
+      <h2>
+        Resolvemos tus dudas
+        <span class="zwe-serif-italic">antes de empezar</span>
+      </h2>
+      <p>
+        Si tu empresa tiene un requerimiento específico ante SUNAT, SUNAFIL o reorganización societaria, escríbenos directamente.
+      </p>
+      <a routerLink="/contacto" class="faq-contact-link">
+        Ir al formulario de contacto
+      </a>
+    </div>
+
+    <div class="faq-list reveal-up delay-1">
+      <div class="faq-item"
            *ngFor="let faq of faqs; let i = index"
-           [class.open]="openFaqIndex === i">
-        <h5 class="faq-question" (click)="toggleFaqItem(i)">
-          {{ faq.q }}
-          <i class="fa-solid" [class.fa-chevron-down]="openFaqIndex !== i" [class.fa-chevron-up]="openFaqIndex === i"></i>
-        </h5>
-        <div class="faq-answer" *ngIf="openFaqIndex === i">
-          <p>{{ faq.a }}</p>
+           [class.is-open]="openFaqIndex === i">
+        <h3>
+          <button type="button"
+                  class="faq-trigger"
+                  (click)="toggleFaqItem(i)"
+                  [attr.aria-expanded]="openFaqIndex === i"
+                  [attr.aria-controls]="'faq-panel-' + i">
+            <span class="faq-q-left">
+              <span class="faq-num">0{{ i + 1 }}</span>
+              <span class="faq-q-text">{{ faq.q }}</span>
+            </span>
+            <span class="faq-plus" aria-hidden="true">
+              <i class="fa-solid" [ngClass]="openFaqIndex === i ? 'fa-minus' : 'fa-plus'"></i>
+            </span>
+          </button>
+        </h3>
+        <div [id]="'faq-panel-' + i"
+             class="faq-panel"
+             [class.is-open]="openFaqIndex === i">
+          <div class="faq-panel-inner">
+            <p>{{ faq.a }}</p>
+          </div>
         </div>
       </div>
     </div>

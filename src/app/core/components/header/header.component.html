@@ -1,83 +1,163 @@
-<header class="et-l et-l--header header-custom">
-  <div class="header-inner">
+<header class="site-header" [class.is-scrolled]="isScrolled">
+  <div class="header-shell" [class.is-scrolled]="isScrolled">
     <!-- Desktop Header -->
     <div class="header-desktop">
-      <div class="header-brand-nav">
-        <a routerLink="/" class="header-logo-link">
-          <img src="/assets/images/brand/logo-zwe-corporativa.png" alt="ZWE Corporativa" class="header-logo-img">
-        </a>
-        <nav class="header-nav">
-          <ul class="nav-list">
-            <li class="nav-item"><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Inicio</a></li>
-            <li class="nav-item"><a routerLink="/nosotros" routerLinkActive="active">Nosotros</a></li>
-            <li class="nav-item"><a routerLink="/blog" routerLinkActive="active">Blog</a></li>
-            <li class="nav-item nav-has-dropdown">
-              <a routerLink="/servicios" routerLinkActive="active" class="dropdown-trigger">Servicios <i class="fa-solid fa-chevron-down nav-arrow"></i></a>
-              <ul class="header-dropdown-menu">
-                <li><a routerLink="/asesoria-contable">Asesoría y Contabilidad Integral</a></li>
-                <li><a routerLink="/asesoria-tributaria">Asesoría Tributaria</a></li>
-                <li><a routerLink="/asesoria-financiera-empresarial">Asesoría Financiera Empresarial</a></li>
-                <li><a routerLink="/asesoria-legal-corporativa">Asesoría Legal Corporativa</a></li>
-                <li><a routerLink="/constitucion-de-empresas">Constitución de Empresas</a></li>
-                <li><a routerLink="/administracion-de-planillas">Administración de Planillas y Nóminas</a></li>
-                <li><a routerLink="/asesoria-laboral">Asesoría Laboral para Empresas</a></li>
-                <li><a routerLink="/servicio-de-seleccion-de-personal">Servicio de Selección de Personal</a></li>
-                <li><a routerLink="/asesoria-administrativa">Gestión y Asesoría Administrativa</a></li>
-              </ul>
-            </li>
-            <li class="nav-item"><a routerLink="/contacto" routerLinkActive="active">Contacto</a></li>
-          </ul>
-        </nav>
-      </div>
+      <a routerLink="/" class="header-brand" (click)="closeServicesDropdown()" aria-label="ZWE Corporativa Inicio">
+        <span class="brand-seal">
+          <img src="/assets/images/brand/logo-zwe-transparent.png" alt="ZWE Corporativa" class="header-logo-img">
+        </span>
+      </a>
+
+      <nav class="header-nav" aria-label="Navegación principal">
+        <ul class="nav-list" role="list">
+          <li class="nav-item">
+            <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Inicio</a>
+          </li>
+          <li class="nav-item">
+            <a routerLink="/nosotros" routerLinkActive="active">Nosotros</a>
+          </li>
+          <li class="nav-item nav-has-dropdown">
+            <div class="dropdown-trigger-group">
+              <a routerLink="/servicios"
+                 routerLinkActive="active"
+                 class="dropdown-link"
+                 (click)="closeServicesDropdown()">
+                Servicios
+              </a>
+              <button type="button"
+                      class="dropdown-chevron-btn"
+                      [attr.aria-expanded]="isServicesDropdownOpen"
+                      aria-controls="services-megamenu"
+                      aria-label="Desplegar menú de servicios"
+                      (click)="toggleServicesDropdown($event)">
+                <i class="fa-solid fa-chevron-down nav-arrow" [class.rotated]="isServicesDropdownOpen" aria-hidden="true"></i>
+              </button>
+            </div>
+
+            <!-- 2-Column Architectural Mega-Menu -->
+            <div id="services-megamenu"
+                 class="header-megamenu"
+                 [class.is-open]="isServicesDropdownOpen">
+              <div class="megamenu-grid">
+                <div class="megamenu-col">
+                  <span class="megamenu-col-label">01 / Contable, Tributario &amp; Legal</span>
+                  <ul class="megamenu-list" role="list">
+                    <li *ngFor="let s of finanzasServices">
+                      <a [routerLink]="s.link" (click)="closeServicesDropdown()" class="megamenu-item">
+                        <span class="megamenu-icon"><i [class]="s.icon" aria-hidden="true"></i></span>
+                        <span class="megamenu-text">
+                          <strong>{{ s.title }}</strong>
+                          <small>{{ s.shortDesc }}</small>
+                        </span>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+                <div class="megamenu-col">
+                  <span class="megamenu-col-label">02 / Laboral, Talento &amp; Gestión</span>
+                  <ul class="megamenu-list" role="list">
+                    <li *ngFor="let s of gestionServices">
+                      <a [routerLink]="s.link" (click)="closeServicesDropdown()" class="megamenu-item">
+                        <span class="megamenu-icon"><i [class]="s.icon" aria-hidden="true"></i></span>
+                        <span class="megamenu-text">
+                          <strong>{{ s.title }}</strong>
+                          <small>{{ s.shortDesc }}</small>
+                        </span>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div class="megamenu-footer">
+                <span class="megamenu-status"><span class="dot"></span> Asesoría personalizada para MYPEs y PYMEs</span>
+                <a routerLink="/servicios" (click)="closeServicesDropdown()" class="megamenu-all-link">
+                  Explorar catálogo completo
+                </a>
+              </div>
+            </div>
+          </li>
+          <li class="nav-item">
+            <a routerLink="/blog" routerLinkActive="active">Blog</a>
+          </li>
+          <li class="nav-item">
+            <a routerLink="/contacto" routerLinkActive="active">Contacto</a>
+          </li>
+        </ul>
+      </nav>
 
       <div class="header-actions">
-        <ul class="header-social-list">
-          <li><a href="https://www.facebook.com/profile.php?id=61587699790901" target="_blank" rel="noopener" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a></li>
-          <li><a href="https://www.instagram.com/zwe.corporativa/" target="_blank" rel="noopener" title="Instagram"><i class="fa-brands fa-instagram"></i></a></li>
-          <li><a href="https://www.tiktok.com/@zwe.corporativa.s?_r=1&#038;_t=ZS-93pwiAEOtY9" target="_blank" rel="noopener" title="TikTok"><i class="fa-brands fa-tiktok"></i></a></li>
-        </ul>
-        <a routerLink="/contacto" class="header-cta-btn">Contáctanos</a>
+        <div class="header-socials">
+          <a href="https://www.facebook.com/profile.php?id=61587699790901" target="_blank" rel="noopener" aria-label="Facebook">
+            <i class="fa-brands fa-facebook-f" aria-hidden="true"></i>
+          </a>
+          <a href="https://www.instagram.com/zwe.corporativa/" target="_blank" rel="noopener" aria-label="Instagram">
+            <i class="fa-brands fa-instagram" aria-hidden="true"></i>
+          </a>
+          <a href="https://www.tiktok.com/@zwe.corporativa.s?_r=1&_t=ZS-93pwiAEOtY9" target="_blank" rel="noopener" aria-label="TikTok">
+            <i class="fa-brands fa-tiktok" aria-hidden="true"></i>
+          </a>
+        </div>
+        <a routerLink="/contacto" class="header-cta-btn">
+          <span>Contáctanos</span>
+        </a>
       </div>
     </div>
 
     <!-- Mobile Header -->
     <div class="header-mobile">
-      <a routerLink="/" class="header-logo-link">
-        <img src="/assets/images/brand/logo-zwe-corporativa.png" alt="ZWE Corporativa" class="header-logo-img">
+      <a routerLink="/" class="header-brand" (click)="closeMobileMenu()" aria-label="ZWE Corporativa Inicio">
+        <span class="brand-seal brand-seal--sm">
+          <img src="/assets/images/brand/logo-zwe-transparent.png" alt="ZWE Corporativa" class="header-logo-img">
+        </span>
       </a>
-      <button class="mobile-toggle-btn" (click)="toggleMobileMenu()" aria-label="Abrir menú">
-        <i class="fa-solid" [ngClass]="isMobileMenuOpen ? 'fa-xmark' : 'fa-bars'"></i>
+      <button type="button"
+              class="mobile-toggle-btn"
+              (click)="toggleMobileMenu()"
+              [attr.aria-expanded]="isMobileMenuOpen"
+              [attr.aria-label]="isMobileMenuOpen ? 'Cerrar menú de navegación' : 'Abrir menú de navegación'">
+        <i class="fa-solid" [ngClass]="isMobileMenuOpen ? 'fa-xmark' : 'fa-bars'" aria-hidden="true"></i>
       </button>
     </div>
+  </div>
 
-    <!-- Mobile Menu Drawer -->
-    <div class="mobile-drawer" *ngIf="isMobileMenuOpen">
-      <ul class="mobile-nav-list">
+  <!-- Mobile Drawer -->
+  <div class="mobile-drawer" *ngIf="isMobileMenuOpen">
+    <nav class="mobile-drawer-inner" aria-label="Menú móvil">
+      <ul class="mobile-nav-list" role="list">
         <li><a routerLink="/" (click)="closeMobileMenu()">Inicio</a></li>
         <li><a routerLink="/nosotros" (click)="closeMobileMenu()">Nosotros</a></li>
-        <li><a routerLink="/blog" (click)="closeMobileMenu()">Blog</a></li>
         <li class="mobile-dropdown-item">
-          <div class="mobile-dropdown-header" (click)="toggleMobileServices()">
+          <button type="button"
+                  class="mobile-dropdown-header"
+                  [attr.aria-expanded]="isMobileServicesOpen"
+                  (click)="toggleMobileServices()">
             <span>Servicios</span>
-            <i class="fa-solid" [ngClass]="isMobileServicesOpen ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
-          </div>
-          <ul class="mobile-sub-menu" *ngIf="isMobileServicesOpen">
-            <li><a routerLink="/asesoria-contable" (click)="closeMobileMenu()">Asesoría y Contabilidad Integral</a></li>
-            <li><a routerLink="/asesoria-tributaria" (click)="closeMobileMenu()">Asesoría Tributaria</a></li>
-            <li><a routerLink="/asesoria-financiera-empresarial" (click)="closeMobileMenu()">Asesoría Financiera Empresarial</a></li>
-            <li><a routerLink="/asesoria-legal-corporativa" (click)="closeMobileMenu()">Asesoría Legal Corporativa</a></li>
-            <li><a routerLink="/constitucion-de-empresas" (click)="closeMobileMenu()">Constitución de Empresas</a></li>
-            <li><a routerLink="/administracion-de-planillas" (click)="closeMobileMenu()">Administración de Planillas y Nóminas</a></li>
-            <li><a routerLink="/asesoria-laboral" (click)="closeMobileMenu()">Asesoría Laboral para Empresas</a></li>
-            <li><a routerLink="/servicio-de-seleccion-de-personal" (click)="closeMobileMenu()">Servicio de Selección de Personal</a></li>
-            <li><a routerLink="/asesoria-administrativa" (click)="closeMobileMenu()">Gestión y Asesoría Administrativa</a></li>
+            <i class="fa-solid" [ngClass]="isMobileServicesOpen ? 'fa-chevron-up' : 'fa-chevron-down'" aria-hidden="true"></i>
+          </button>
+          <ul class="mobile-sub-menu" *ngIf="isMobileServicesOpen" role="list">
+            <li><a routerLink="/servicios" (click)="closeMobileMenu()" class="all-services-mobile">Ver todos los servicios →</a></li>
+            <li *ngFor="let s of services">
+              <a [routerLink]="s.link" (click)="closeMobileMenu()">{{ s.title }}</a>
+            </li>
           </ul>
         </li>
+        <li><a routerLink="/blog" (click)="closeMobileMenu()">Blog</a></li>
         <li><a routerLink="/contacto" (click)="closeMobileMenu()">Contacto</a></li>
       </ul>
-      <div class="mobile-drawer-actions">
-        <a routerLink="/contacto" (click)="closeMobileMenu()" class="header-cta-btn mobile-cta">Contáctanos</a>
+
+      <div class="mobile-drawer-footer">
+        <div class="mobile-drawer-actions">
+          <a href="https://api.whatsapp.com/send/?phone=51918663597&text=Hola+%2AZWE+Corporativa%2A.+Necesito+m%C3%A1s+informaci%C3%B3n."
+             target="_blank"
+             rel="noopener"
+             class="zwe-btn zwe-btn--outline-light mobile-btn">
+            <i class="fa-brands fa-whatsapp" aria-hidden="true"></i> WhatsApp
+          </a>
+          <a routerLink="/contacto" (click)="closeMobileMenu()" class="zwe-btn zwe-btn--gold mobile-btn">
+            Contáctanos
+          </a>
+        </div>
       </div>
-    </div>
+    </nav>
   </div>
 </header>

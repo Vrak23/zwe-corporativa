@@ -23,13 +23,14 @@ export class NosotrosComponent implements AfterViewInit, OnDestroy {
   tab = 1;
   isBrowser: boolean;
 
-  // Estados del reproductor de video (inicia en silencio para garantizar reproducción automática según políticas del navegador)
-  isMuted = true;
+  // Estados del reproductor de video
+  isMuted = false;
   volume = 0.5;
   isVolumeOpen = false;
 
   private observer: IntersectionObserver | null = null;
   private isIntersecting = false;
+  private userInteracted = false;
 
   constructor(@Inject(PLATFORM_ID) platformId: Object) {
     this.isBrowser = isPlatformBrowser(platformId);
@@ -42,7 +43,24 @@ export class NosotrosComponent implements AfterViewInit, OnDestroy {
     video.muted = this.isMuted;
     video.volume = this.volume;
 
-    // Iniciar reproducción segura en silencio
+    // Escuchar interacción del usuario en la página para desmutear si el navegador bloqueó el audio inicial
+    const unlockSound = () => {
+      this.userInteracted = true;
+      if (video && video.muted) {
+        video.muted = false;
+        video.volume = this.volume || 0.5;
+        this.isMuted = false;
+      }
+      window.removeEventListener('click', unlockSound);
+      window.removeEventListener('touchstart', unlockSound);
+      window.removeEventListener('keydown', unlockSound);
+    };
+
+    window.addEventListener('click', unlockSound);
+    window.addEventListener('touchstart', unlockSound);
+    window.addEventListener('keydown', unlockSound);
+
+    // Iniciar reproducción
     this.startPlayback(video);
 
     // Observador para auto-play y pausa inteligente al hacer scroll
@@ -69,10 +87,12 @@ export class NosotrosComponent implements AfterViewInit, OnDestroy {
   private startPlayback(video: HTMLVideoElement): void {
     if (!video) return;
     video.muted = this.isMuted;
+    video.volume = this.volume;
     const playPromise = video.play();
     if (playPromise !== undefined) {
       playPromise.catch(() => {
-        // En caso de que el navegador exija que esté explícitamente silenciado
+        // Si el navegador bloquea la reproducción automática con sonido (política de autoplay),
+        // inicia silenciado para no detener el video y se desbloquea con el primer clic del usuario
         video.muted = true;
         this.isMuted = true;
         video.play().catch(() => {});

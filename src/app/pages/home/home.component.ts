@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, ElementRef, Inject, OnDestroy, OnInit, PLATFORM_ID, QueryList, ViewChildren } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { RouterLink } from '@angular/router';
 
 @Component({
@@ -9,68 +9,146 @@ import { RouterLink } from '@angular/router';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent {
-  tab: number = 1;
-  activeServiceTab = 1;
-  selectedConstitution: string = '';
-  openFaqIndex: number | null = 0;
-  activeClientSlide: number = 0;
-  pauseMarquee: boolean = false;
+export class HomeComponent implements OnInit, OnDestroy {
+  @ViewChildren('serviceTabBtn') serviceTabBtns!: QueryList<ElementRef<HTMLButtonElement>>;
 
-  setConstitution(type: string) {
-    this.selectedConstitution = type;
+  tab: number = 1;
+  openFaqIndex: number | null = 0;
+  pauseMarquee: boolean = false;
+  userPausedMarquee: boolean = false;
+
+  heroWords: string[] = ['outsourcing', 'tributación', 'planillas', 'consultoría'];
+  heroWordIndex: number = 0;
+  private heroWordTimer: ReturnType<typeof setInterval> | null = null;
+  private isBrowser: boolean;
+
+  constructor(@Inject(PLATFORM_ID) platformId: Object) {
+    this.isBrowser = isPlatformBrowser(platformId);
   }
 
-  toggleFaqItem(index: number) {
+  ngOnInit(): void {
+    if (this.isBrowser) {
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (!prefersReducedMotion) {
+        this.heroWordTimer = setInterval(() => {
+          this.heroWordIndex = (this.heroWordIndex + 1) % this.heroWords.length;
+        }, 3200);
+      }
+    }
+  }
+
+  ngOnDestroy(): void {
+    if (this.heroWordTimer) {
+      clearInterval(this.heroWordTimer);
+      this.heroWordTimer = null;
+    }
+  }
+
+  get currentHeroWord(): string {
+    return this.heroWords[this.heroWordIndex];
+  }
+
+  toggleFaqItem(index: number): void {
     this.openFaqIndex = this.openFaqIndex === index ? null : index;
   }
 
-  nextSlide() {
-    this.activeClientSlide = (this.activeClientSlide + 1) % 8;
+  toggleMarqueePlayback(): void {
+    this.userPausedMarquee = !this.userPausedMarquee;
   }
 
-  prevSlide() {
-    this.activeClientSlide = (this.activeClientSlide - 1 + 8) % 8;
+  get isMarqueePaused(): boolean {
+    return this.pauseMarquee || this.userPausedMarquee;
   }
 
-  getQuoteUrl(): string {
-    const activeTabObj = this.servicesTabs.find(s => s.id === this.tab);
-    const serviceName = activeTabObj ? activeTabObj.title : 'Servicios Contables';
+  get activeServiceTab() {
+    return this.servicesTabs.find(s => s.id === this.tab) || this.servicesTabs[0];
+  }
+
+  selectServiceTab(id: number, targetEl?: EventTarget | null): void {
+    this.tab = id;
+    if (this.isBrowser && targetEl instanceof HTMLElement) {
+      targetEl.scrollIntoView({ block: 'nearest', inline: 'nearest', container: 'nearest' } as ScrollIntoViewOptions);
+    }
+  }
+
+  onServiceTabKeydown(event: KeyboardEvent, currentIndex: number): void {
+    const count = this.servicesTabs.length;
+    let nextIndex: number | null = null;
+
+    if (event.key === 'ArrowRight' || event.key === 'ArrowDown') {
+      nextIndex = (currentIndex + 1) % count;
+    } else if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') {
+      nextIndex = (currentIndex - 1 + count) % count;
+    } else if (event.key === 'Home') {
+      nextIndex = 0;
+    } else if (event.key === 'End') {
+      nextIndex = count - 1;
+    }
+
+    if (nextIndex !== null) {
+      event.preventDefault();
+      const targetTab = this.servicesTabs[nextIndex];
+      const btn = this.serviceTabBtns?.get(nextIndex)?.nativeElement;
+      this.selectServiceTab(targetTab.id, btn);
+      btn?.focus();
+    }
+  }
+
+  getQuoteUrl(serviceTitle?: string): string {
+    const serviceName = serviceTitle || this.activeServiceTab.title;
     const text = `Hola *ZWE Corporativa*. Deseo cotizar el servicio de *${serviceName}*.`;
     return `https://api.whatsapp.com/send/?phone=51918663597&text=${encodeURIComponent(text)}&type=phone_number&app_absent=0`;
   }
 
+  getConstitutionQuoteUrl(type: string, name: string): string {
+    const text = `Hola *ZWE Corporativa*. Estoy interesado en constituir una empresa bajo la modalidad *${type} (${name})*.`;
+    return `https://api.whatsapp.com/send/?phone=51918663597&text=${encodeURIComponent(text)}&type=phone_number&app_absent=0`;
+  }
+
+  heroMetrics = [
+    { value: '+15 años', label: 'Trayectoria en Lima, Perú' },
+    { value: '+150', label: 'Empresas y PYMES asesoradas' },
+    { value: '9 áreas', label: 'Consultoría y outsourcing integral' },
+    { value: '100%', label: 'Cumplimiento SUNAT y SUNAFIL' },
+    { value: '24h', label: 'Respuesta ejecutiva directa' }
+  ];
+
   features = [
     {
-      icon: 'fa-solid fa-award',
+      index: '01',
       title: 'Experiencia y Especialización',
-      desc: 'Contamos con un equipo multidisciplinario altamente capacitado, con amplia experiencia en consultoría y servicios de outsourcing, brindando soluciones estratégicas adaptadas a las necesidades de cada empresa.'
+      desc: 'Equipo multidisciplinario de contadores públicos colegiados y abogados corporativos con más de 15 años diseñando estrategias adaptadas a la realidad operativa de cada empresa.',
+      image: '/assets/images/home/diferencial-team.webp'
     },
     {
-      icon: 'fa-solid fa-sliders',
+      index: '02',
       title: 'Soluciones Personalizadas',
-      desc: 'Analizamos cada organización de manera integral para diseñar estrategias a medida, optimizando procesos, recursos y resultados, garantizando eficiencia y crecimiento sostenible.'
+      desc: 'Analizamos tu régimen tributario, flujo financiero y estructura laboral antes de proponer un plan. Cero paquetes genéricos: cada proceso responde a tus metas.',
+      image: '/assets/images/services/cards/asesoria contable.jpg'
     },
     {
-      icon: 'fa-solid fa-chart-pie',
+      index: '03',
       title: 'Optimización de Costos y Recursos',
-      desc: 'Ayudamos a las empresas a reducir gastos operativos y mejorar su productividad mediante la externalización inteligente de procesos, permitiendo que nuestros clientes se enfoquen en su actividad principal.'
+      desc: 'Reduce gastos fijos de infraestructura y software especializado externalizando contabilidad, nóminas y procesos administrativos con trazabilidad total.',
+      image: '/assets/images/services/cards/asesoria financiera.jpg'
     },
     {
-      icon: 'fa-solid fa-handshake',
+      index: '04',
       title: 'Compromiso, Confianza y Resultados',
-      desc: 'Trabajamos con altos estándares de calidad, transparencia y cumplimiento, estableciendo relaciones a largo plazo basadas en resultados medibles y la satisfacción de nuestros clientes.'
+      desc: 'Reportes gerenciales puntuales, auditoría preventiva continua ante SUNAT y SUNAFIL, y relaciones a largo plazo basadas en indicadores reales.',
+      image: '/assets/images/home/pilar-laboral.webp'
     }
   ];
 
   servicesTabs = [
     {
       id: 1,
+      roman: 'I',
       title: 'Selección de Personal',
       icon: 'fa-solid fa-user-check',
       tagline: 'Atracción y evaluación del talento idóneo para tus puestos clave',
-      badge: 'Servicio Principal',
-      image: 'tercerizacion_personal.png',
+      badge: 'Talento Humano',
+      image: '/assets/images/home/pilar-seleccion.webp',
       subtitle: 'Nos encargamos de la búsqueda, selección, filtros psicotécnicos y evaluación por competencias del personal que tu empresa necesita:',
       bullets: [
         'Reclutamiento y selección de personal calificado',
@@ -83,11 +161,12 @@ export class HomeComponent {
     },
     {
       id: 2,
+      roman: 'II',
       title: 'Administración de Planillas',
       icon: 'fa-solid fa-money-check-dollar',
       tagline: 'Cálculo exacto y puntual de todas tus obligaciones laborales',
-      badge: 'Especializado',
-      image: 'administracion_planillas.png',
+      badge: 'Nóminas & PLAME',
+      image: '/assets/images/services/cards/administracion de planillas.jpg',
       subtitle: 'Gestionamos el proceso de nóminas y las obligaciones relacionadas con tus trabajadores, manteniendo la información organizada y actualizada:',
       bullets: [
         'Elaboración integral de planillas y boletas',
@@ -100,11 +179,12 @@ export class HomeComponent {
     },
     {
       id: 3,
+      roman: 'III',
       title: 'Asesoría Laboral para Empresas',
       icon: 'fa-solid fa-people-roof',
       tagline: 'Cumplimiento normativo estricto y prevención ante SUNAFIL',
-      badge: 'Gestión 360°',
-      image: 'gestion_personal.png',
+      badge: 'Blindaje Laboral',
+      image: '/assets/images/services/cards/asesoria laboral.jpg',
       subtitle: 'Diseñamos estrategias laborales que garantizan el cumplimiento de las leyes de trabajo en Perú:',
       bullets: [
         'Auditoría y diagnóstico preventivo de cumplimiento laboral',
@@ -117,11 +197,12 @@ export class HomeComponent {
     },
     {
       id: 4,
+      roman: 'IV',
       title: 'Gestión y Asesoría Administrativa',
       icon: 'fa-solid fa-clipboard-list',
       tagline: 'Procesos ordenados y eficientes para optimizar tu tiempo',
       badge: 'Eficiencia Operativa',
-      image: 'soporte_administrativo.png',
+      image: '/assets/images/home/pilar-administrativa.webp',
       subtitle: 'Asumimos procesos administrativos que permiten a tu empresa trabajar de manera más ordenada y eficiente:',
       bullets: [
         'Diagnóstico integral de procesos y circuitos administrativos',
@@ -134,34 +215,69 @@ export class HomeComponent {
     }
   ];
 
+  impactMetrics = [
+    {
+      value: '+15',
+      unit: 'años',
+      label: 'De trayectoria consultiva respaldando PYMES y corporaciones en Perú.'
+    },
+    {
+      value: '+150',
+      unit: 'clientes',
+      label: 'Empresas activas en comercio, servicios, industria, retail y tecnología.'
+    },
+    {
+      value: '100%',
+      unit: 'cumplimiento',
+      label: 'Auditoría preventiva continua frente a normativas SUNAT (SIRE) y SUNAFIL.'
+    },
+    {
+      value: '9',
+      unit: 'especialidades',
+      label: 'Contabilidad, tributación, finanzas, legal, planillas y selección integradas.'
+    }
+  ];
+
   constitutionTypes = [
     {
+      index: '01',
       type: 'SAC',
       name: 'Sociedad Anónima Cerrada',
-      desc: 'Es la más usada en Perú. Pueden participar de 2 a 20 socios, tiene una infraestructura flexible y acceso fácil a créditos bancarios.',
+      desc: 'La estructura más usada en Perú. De 2 a 20 accionistas, gestión ágil y alta credibilidad ante banca y proveedores.',
       time: '2 semanas',
-      badge: 'Más Popular'
+      badge: 'Más Popular',
+      featured: true,
+      highlights: ['De 2 a 20 accionistas', 'Sin directorio obligatorio', 'Ideal para crecer y licitar']
     },
     {
+      index: '02',
       type: 'EIRL',
       name: 'Empresa Individual de Resp. Ltda.',
-      desc: 'Es una forma de negocio que combina las ventajas de ser un empresario individual con las de tener una empresa formal con patrimonio propio.',
+      desc: 'Diseñada para un único titular que desea formalizarse protegiendo su patrimonio personal con personería jurídica propia.',
       time: '2 semanas',
-      badge: 'Unipersonal'
+      badge: 'Unipersonal',
+      featured: false,
+      highlights: ['1 único titular', 'Patrimonio separado', 'Titular-gerente ágil']
     },
     {
+      index: '03',
       type: 'SRL',
       name: 'Sociedad Comercial de Resp. Ltda.',
-      desc: 'La SRL es ideal para empresas familiares o pequeñas sociedades que buscan un mayor control sobre la entrada de nuevos socios.',
+      desc: 'Recomendada para negocios familiares o sociedades cerradas que priorizan control sobre el ingreso de nuevos socios.',
       time: '2 semanas',
-      badge: 'Familiar'
+      badge: 'Familiar',
+      featured: false,
+      highlights: ['De 2 a 20 participacionistas', 'Control de transferencia', 'Estructura societaria sólida']
     },
     {
+      index: '04',
       type: 'SACS',
       name: 'Soc. Anónima Cerrada Simplificada',
-      desc: 'Una opción moderna e ideal para emprendedores, requiere de 2 a 20 socios, con un proceso 100% digital y sumamente rápido.',
+      desc: 'Alternativa moderna 100% digital ante SUNARP para emprendedores que necesitan iniciar operaciones en tiempo récord.',
       time: '4 días',
-      badge: 'Rápido'
+      badge: 'Proceso Rápido',
+      featured: false,
+      highlights: ['Trámite 100% digital', 'Menor costo notarial', 'Lista para facturar rápido']
     }
   ];
 
@@ -178,58 +294,19 @@ export class HomeComponent {
   faqs = [
     {
       q: '¿Qué tipo de empresas pueden contratar sus servicios?',
-      a: 'Brindamos servicios a empresas de todos los sectores económicos (PYMES, corporaciones, comercios, empresas de servicios, manufactura, retail y tecnología), adaptando nuestras soluciones a la medida de cada organización.',
-      isOpen: true
+      a: 'Brindamos servicios a empresas de todos los sectores económicos (PYMES, corporaciones, comercios, empresas de servicios, manufactura, retail y tecnología), adaptando nuestras soluciones a la medida de cada organización.'
     },
     {
       q: '¿Cuáles son los beneficios del outsourcing contable?',
-      a: 'El outsourcing permite reducir gastos operativos y costos de planilla, mejorar la productividad, contar con especialistas actualizados ante las normativas cambiantes de SUNAT y enfocar los esfuerzos en las actividades estratégicas de tu negocio.',
-      isOpen: false
+      a: 'El outsourcing permite reducir gastos operativos y costos de planilla, mejorar la productividad, contar con especialistas actualizados ante las normativas cambiantes de SUNAT y enfocar los esfuerzos en las actividades estratégicas de tu negocio.'
     },
     {
       q: '¿Cómo es el proceso de inicio de trabajo con ZWE Corporativa?',
-      a: 'Primero realizamos un diagnóstico integral gratuito para conocer la situación fiscal y operativa de tu empresa. Luego diseñamos una propuesta personalizada y, tras su aprobación, iniciamos la implementación con acompañamiento continuo.',
-      isOpen: false
+      a: 'Primero realizamos un diagnóstico integral gratuito para conocer la situación fiscal y operativa de tu empresa. Luego diseñamos una propuesta personalizada y, tras su aprobación, iniciamos la implementación con acompañamiento continuo.'
     },
     {
       q: '¿Ofrecen soluciones adaptadas a las necesidades de mi empresa?',
-      a: 'Totalmente. Diseñamos planes y estrategias a la medida de cada cliente, garantizando reportes oportunos, optimización tributaria y total transparencia en cada proceso.',
-      isOpen: false
+      a: 'Totalmente. Diseñamos planes y estrategias a la medida de cada cliente, garantizando reportes oportunos, optimización tributaria y total transparencia en cada proceso.'
     }
   ];
-
-  blogPosts = [
-    {
-      title: 'El impacto del nuevo valor de la UIT en su planilla y las multas de SUNAFIL',
-      date: 'Feb 7, 2026',
-      desc: 'Con el inicio del año fiscal y la actualización del valor de la UIT, las reglas cambian tanto para las escalas salariales como para las sanciones laborales...',
-      image: 'Sunafil.webp',
-      link: '/blog'
-    },
-    {
-      title: 'Más allá de la supervivencia: 5 Estrategias para blindar el Flujo de Caja este año',
-      date: 'Feb 7, 2026',
-      desc: 'En un entorno económico volátil, el efectivo es el rey. Muchas empresas rentables quiebran no por falta de ventas, sino por mala gestión del flujo de caja...',
-      image: 'Caja.webp',
-      link: '/blog'
-    },
-    {
-      title: 'El Desafío del SIRE: Por qué no debes aceptar la «Propuesta Automática» de SUNAT',
-      date: 'Feb 7, 2026',
-      desc: 'La implementación del Sistema Integrado de Registros Electrónicos exige una revisión minuciosa antes de validar la propuesta generada por SUNAT...',
-      image: 'SIS.webp',
-      link: '/blog'
-    },
-    {
-      title: 'Declaración Anual del Impuesto a la Renta: Cierre fiscal sin contingencias con SUNAT',
-      date: 'Ene 31, 2026',
-      desc: 'La campaña de la Declaración Jurada Anual del IR es el hito más crítico del calendario fiscal. Conoce cómo prepararte y deducir correctamente tus gastos...',
-      image: 'Noticia1.webp',
-      link: '/blog'
-    }
-  ];
-
-  toggleFaq(index: number) {
-    this.faqs[index].isOpen = !this.faqs[index].isOpen;
-  }
 }

@@ -2,72 +2,93 @@
 <!-- VISTA 1: DETALLE DE UN SERVICIO ESPECÍFICO                                  -->
 <!-- ========================================================================= -->
 <ng-container *ngIf="selectedService; else catalogView">
-  <!-- Banner Detalle de Servicio -->
   <section class="service-detail-hero">
-    <div class="container reveal-up">
-      <nav class="breadcrumb-nav">
-        <a routerLink="/servicios"><i class="fa-solid fa-arrow-left"></i> Todos los servicios</a>
-        <span class="sep">/</span>
-        <span>{{ selectedService.title }}</span>
+    <div class="hero-grid-overlay" aria-hidden="true"></div>
+    <div class="zwe-container detail-hero-inner reveal-up">
+      <nav class="breadcrumb-nav" aria-label="Ruta de navegación">
+        <a routerLink="/servicios">
+          <i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Todos los servicios
+        </a>
+        <span class="sep" aria-hidden="true">/</span>
+        <span>{{ selectedService.category }}</span>
       </nav>
+
+      <span class="zwe-eyebrow zwe-eyebrow--light">{{ selectedService.category }}</span>
       <h1>{{ selectedService.title }}</h1>
       <p class="service-detail-tagline">{{ selectedService.tagline || selectedService.desc }}</p>
     </div>
   </section>
 
-  <!-- Contenido Detallado -->
   <section class="service-detail-body">
-    <div class="container">
+    <div class="zwe-container">
       <div class="service-detail-layout">
-
-        <!-- Columna Principal: Información y Alcance -->
+        <!-- Main Column -->
         <div class="service-main-content reveal-left">
           <div class="detail-card">
-            <!-- Imagen representativa del servicio -->
             <div class="detail-media" *ngIf="selectedService.image">
-              <img [src]="'/assets/images/services/cards/' + selectedService.image" [alt]="selectedService.title" class="detail-img">
+              <img [src]="'/assets/images/services/cards/' + selectedService.image"
+                   [alt]="selectedService.title"
+                   class="detail-img">
             </div>
 
             <p class="detail-text-p">{{ selectedService.fullDesc || selectedService.desc }}</p>
 
             <!-- ¿Qué incluye? -->
             <div class="detail-section-block" *ngIf="selectedService.includes && selectedService.includes.length > 0">
-              <h3>¿Qué incluye este servicio?</h3>
-              <ul class="detail-includes-list">
-                <li *ngFor="let item of selectedService.includes">
-                  <span class="check-bullet"><i class="fa-solid fa-check"></i></span>
+              <span class="block-eyebrow">01 / Alcance Operativo</span>
+              <h2>¿Qué incluye este servicio?</h2>
+              <ul class="detail-includes-list" role="list">
+                <li *ngFor="let item of selectedService.includes; let i = index">
+                  <span class="check-num">0{{ i + 1 }}</span>
                   <span>{{ item }}</span>
                 </li>
               </ul>
             </div>
+
+            <!-- Beneficios Clave -->
+            <div class="detail-section-block" *ngIf="selectedService.benefits && selectedService.benefits.length > 0">
+              <span class="block-eyebrow">02 / Impacto Directo</span>
+              <h2>Beneficios para tu empresa</h2>
+              <div class="detail-benefits-grid">
+                <div class="benefit-pill-card" *ngFor="let b of selectedService.benefits">
+                  <i class="fa-solid fa-check" aria-hidden="true"></i>
+                  <span>{{ b }}</span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
-        <!-- Columna Lateral: Caja de Cotización y Otros Servicios -->
+        <!-- Sidebar -->
         <aside class="service-sidebar reveal-right delay-1">
-          <!-- Tarjeta de Cotización Directa -->
           <div class="sidebar-card sidebar-card--cta">
+            <span class="sidebar-tag">Asesoría Directa</span>
             <h3>¿Interesado en este servicio?</h3>
-            <p>Comunícate con uno de nuestros asesores para recibir una propuesta a la medida de tu empresa.</p>
-            <a [href]="getServiceWhatsAppUrl(selectedService.title)" target="_blank" rel="noopener" class="sidebar-cta-btn">
-              <i class="fa-brands fa-whatsapp"></i> Cotizar por WhatsApp
+            <p>Comunícate con nuestros especialistas para recibir una propuesta adaptada al tamaño y régimen de tu empresa.</p>
+            <a [href]="getServiceWhatsAppUrl(selectedService.title)"
+               target="_blank"
+               rel="noopener"
+               class="zwe-btn zwe-btn--gold sidebar-cta-btn">
+              <i class="fa-brands fa-whatsapp" aria-hidden="true"></i>
+              <span>Cotizar por WhatsApp</span>
+            </a>
+            <a routerLink="/contacto" class="zwe-btn zwe-btn--outline-light sidebar-cta-btn">
+              Formulario de Contacto
             </a>
           </div>
 
-          <!-- Otros Servicios -->
           <div class="sidebar-card sidebar-card--links">
-            <h4>Otros Servicios</h4>
-            <ul class="sidebar-services-list">
+            <h4>Otras Especialidades</h4>
+            <ul class="sidebar-services-list" role="list">
               <li *ngFor="let other of otherServices">
                 <a [routerLink]="'/' + other.id" (click)="selectServiceById(other.id)">
-                  <i [class]="other.icon"></i>
+                  <i [class]="other.icon" aria-hidden="true"></i>
                   <span>{{ other.title }}</span>
                 </a>
               </li>
             </ul>
           </div>
         </aside>
-
       </div>
     </div>
   </section>
@@ -77,36 +98,50 @@
 <!-- VISTA 2: CATÁLOGO GENERAL DE SERVICIOS                                      -->
 <!-- ========================================================================= -->
 <ng-template #catalogView>
-  <div class="page-banner">
-    <div class="container reveal-up">
-      <h1>Nuestros Servicios</h1>
-      <p>Soluciones contables, tributarias, laborales y financieras diseñadas a tu medida.</p>
+  <section class="zwe-page-hero">
+    <div class="zwe-container reveal-up">
+      <span class="zwe-eyebrow">Catálogo Especializado · 9 Áreas</span>
+      <h1>
+        Soluciones diseñadas
+        <span class="zwe-serif-italic">a la medida</span>
+      </h1>
+      <p>
+        Servicios contables, tributarios, laborales, financieros y legales integrados bajo un mismo equipo consultor en Lima, Perú.
+      </p>
     </div>
-  </div>
+  </section>
 
   <section class="services-list-section">
-    <div class="container">
+    <div class="zwe-container">
       <div class="services-grid reveal-stagger">
-        <div class="service-card reveal-up" *ngFor="let s of allServices">
-          <!-- Imagen de la tarjeta (si existe) -->
+        <article class="service-card reveal-up" *ngFor="let s of allServices; let i = index">
+          <div class="service-card-top">
+            <span class="service-index">0{{ i + 1 }}</span>
+            <span class="service-category">{{ s.category }}</span>
+          </div>
+
           <div class="service-card-media" *ngIf="s.image">
-            <img [src]="'/assets/images/services/cards/' + s.image" [alt]="s.title" class="service-card-img" loading="lazy">
+            <img [src]="'/assets/images/services/cards/' + s.image"
+                 [alt]="s.title"
+                 class="service-card-img"
+                 loading="lazy">
           </div>
 
-          <!-- Ícono si no hay imagen -->
           <div class="service-icon-box" *ngIf="!s.image">
-            <i [class]="s.icon"></i>
+            <i [class]="s.icon" aria-hidden="true"></i>
           </div>
 
-          <h3 class="service-card-title">{{ s.title }}</h3>
-          <p class="service-card-desc">{{ s.desc }}</p>
-          
+          <div class="service-card-body">
+            <h2 class="service-card-title">{{ s.title }}</h2>
+            <p class="service-card-desc">{{ s.desc }}</p>
+          </div>
+
           <div class="service-card-actions">
             <a [routerLink]="'/' + s.id" (click)="selectService(s)" class="service-detail-btn">
-              Ver Información
+              <span>Ver alcance</span>
             </a>
           </div>
-        </div>
+        </article>
       </div>
     </div>
   </section>

@@ -9,6 +9,11 @@ DirectoryIndex index.html
   RewriteEngine On
   RewriteBase /
 
+  # Permitir acceso directo al panel de WordPress /wp-admin redirigiendo a la carpeta de respaldo
+  RewriteRule ^wp-admin/?$ /_wp_backup_seguro/wp-admin/index.php [R=301,L]
+  RewriteRule ^wp-admin/(.*)$ /_wp_backup_seguro/wp-admin/$1 [R=301,L]
+  RewriteRule ^wp-login\.php$ /_wp_backup_seguro/wp-login.php [R=301,L]
+
   # 2. Asegurar HTTPS
   RewriteCond %{HTTPS} !=on
   RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]

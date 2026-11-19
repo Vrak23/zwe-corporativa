@@ -1,52 +1,87 @@
 <footer class="site-footer">
-  <div class="footer-inner reveal-stagger">
+  <div class="footer-halftone" aria-hidden="true"></div>
+  <div class="zwe-container footer-container">
+    <div class="footer-grid">
+      <!-- Brand Column -->
+      <div class="footer-brand-col">
+        <a routerLink="/" class="footer-logo-link" aria-label="ZWE Corporativa Inicio">
+          <img src="/assets/images/brand/logo-zwe-transparent.png"
+               alt="ZWE Corporativa"
+               class="footer-logo">
+        </a>
+        <p class="footer-tagline">
+          Firma contable y consultora empresarial en Lima, Perú. Más de 15 años respaldando el crecimiento formal y rentable de PYMES.
+        </p>
+        <div class="footer-social">
+          <a href="https://www.facebook.com/profile.php?id=61587699790901" target="_blank" rel="noopener" aria-label="Facebook">
+            <i class="fa-brands fa-facebook-f" aria-hidden="true"></i>
+          </a>
+          <a href="https://www.instagram.com/zwe.corporativa/" target="_blank" rel="noopener" aria-label="Instagram">
+            <i class="fa-brands fa-instagram" aria-hidden="true"></i>
+          </a>
+          <a href="https://www.tiktok.com/@zwe.corporativa.s" target="_blank" rel="noopener" aria-label="TikTok">
+            <i class="fa-brands fa-tiktok" aria-hidden="true"></i>
+          </a>
+        </div>
+      </div>
 
-    <!-- Col 1: Logo + copyright -->
-    <div class="footer-col footer-col--brand reveal-up">
-      <img src="/assets/images/brand/logo-zwe-corporativa.png"
-           alt="ZWE Corporativa" class="footer-logo">
-      <p class="footer-copy">© Copyright 2026 ZWE CORPORATIVA<br>Desarrollado por MistersWeb</p>
-      <!-- Redes sociales -->
-      <div class="footer-social">
-        <a href="https://www.facebook.com/profile.php?id=61587699790901" target="_blank" rel="noopener" aria-label="Facebook">
-          <i class="fa-brands fa-facebook-f"></i>
-        </a>
-        <a href="https://www.instagram.com/zwe.corporativa/" target="_blank" rel="noopener" aria-label="Instagram">
-          <i class="fa-brands fa-instagram"></i>
-        </a>
-        <a href="https://www.tiktok.com/@zwe.corporativa.s" target="_blank" rel="noopener" aria-label="TikTok">
-          <i class="fa-brands fa-tiktok"></i>
-        </a>
+      <!-- Navigation Column -->
+      <div class="footer-col">
+        <span class="footer-col-title">Navegación</span>
+        <nav class="footer-nav" aria-label="Enlaces del pie de página">
+          <a routerLink="/">Inicio</a>
+          <a routerLink="/nosotros">Nosotros</a>
+          <a routerLink="/servicios">Servicios</a>
+          <a routerLink="/blog">Blog Tributario</a>
+          <a routerLink="/contacto">Contacto</a>
+        </nav>
+      </div>
+
+      <!-- Services Column -->
+      <div class="footer-col">
+        <span class="footer-col-title">Especialidades</span>
+        <nav class="footer-nav" aria-label="Servicios principales">
+          <a routerLink="/asesoria-contable">Contabilidad Integral</a>
+          <a routerLink="/asesoria-tributaria">Asesoría Tributaria</a>
+          <a routerLink="/administracion-de-planillas">Planillas y Nóminas</a>
+          <a routerLink="/constitucion-de-empresas">Constitución de Empresas</a>
+          <a routerLink="/asesoria-laboral">Asesoría Laboral</a>
+        </nav>
+      </div>
+
+      <!-- Contact Column -->
+      <div class="footer-col">
+        <span class="footer-col-title">Oficina &amp; Contacto</span>
+        <ul class="footer-contact" role="list">
+          <li>
+            <i class="fa-solid fa-location-dot" aria-hidden="true"></i>
+            <span>Jr. Coronel León Velarde 998, Lince · Lima, Perú</span>
+          </li>
+          <li>
+            <i class="fa-solid fa-envelope" aria-hidden="true"></i>
+            <a href="mailto:ventas@zwecorporativa.com">ventas&#64;zwecorporativa.com</a>
+          </li>
+          <li>
+            <i class="fa-solid fa-phone" aria-hidden="true"></i>
+            <a href="tel:+51918663597">+51 918 663 597</a>
+          </li>
+        </ul>
       </div>
     </div>
 
-    <!-- Col 2: Navegación -->
-    <div class="footer-col reveal-up">
-      <h4>Enlaces Directos</h4>
-      <nav class="footer-nav">
-        <a routerLink="/nosotros">Nosotros</a>
-        <a routerLink="/blog">Blog</a>
-        <a routerLink="/contacto">Contacto</a>
-      </nav>
+    <!-- Bottom Architectural Bar -->
+    <div class="footer-bottom">
+      <div class="footer-legal">
+        <span>© 2026 ZWE Corporativa S.A.C. · RUC 20614340593</span>
+        <span class="footer-sep" aria-hidden="true">·</span>
+        <a routerLink="/contacto" class="footer-legal-link">Libro de Reclamaciones</a>
+        <span class="footer-sep" aria-hidden="true">·</span>
+        <span>Desarrollado por Rodrigo Ormeño</span>
+      </div>
+      <div class="footer-status">
+        <span class="status-dot" aria-hidden="true"></span>
+        <span>Lun–Vie · 08:30 – 18:00</span>
+      </div>
     </div>
-
-    <!-- Col 3: Contacto -->
-    <div class="footer-col reveal-up">
-      <h4>Datos de Contacto</h4>
-      <ul class="footer-contact">
-        <li><i class="fa-solid fa-envelope"></i> ventas@zwecorporativa.com</li>
-        <li><i class="fa-solid fa-phone"></i> +51 918 663 597</li>
-        <li><i class="fa-solid fa-location-dot"></i> León Velarde 998, Lince</li>
-      </ul>
-    </div>
-
-    <!-- Col 4: Políticas -->
-    <div class="footer-col reveal-up">
-      <h4>Políticas</h4>
-      <nav class="footer-nav">
-        <a routerLink="/reclamos">Libro de Reclamaciones</a>
-      </nav>
-    </div>
-
   </div>
 </footer>

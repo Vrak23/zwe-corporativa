@@ -1,29 +1,36 @@
-<!-- ── BANNER BLOG ───────────────────────────────────── -->
-<div class="page-banner">
-  <div class="container reveal-up">
-    <h1>Blog de Contabilidad y Finanzas</h1>
-    <p>Noticias, normativas de SUNAT, SUNAFIL y estrategias financieras para empresas.</p>
+<!-- ── 1. ARCHITECTURAL PAGE HERO ──────────────────────────────────────── -->
+<section class="zwe-page-hero">
+  <div class="zwe-container reveal-up">
+    <span class="zwe-eyebrow">Actualidad &amp; Normativa</span>
+    <h1>
+      Blog contable y
+      <span class="zwe-serif-italic">tributario</span>
+    </h1>
+    <p>
+      Análisis oportuno sobre resoluciones SUNAT, fiscalización SUNAFIL, gestión financiera y buenas prácticas para PYMES en el Perú.
+    </p>
   </div>
-</div>
+</section>
 
-<!-- ── LISTA DE ARTÍCULOS ─────────────────────────────── -->
+<!-- ── 2. LISTA DE ARTÍCULOS ─────────────────────────────────────────────── -->
 <section class="blog-section">
-  <div class="container">
-
+  <div class="zwe-container">
     <!-- Filtros de categoría -->
     <nav class="blog-categories reveal-up delay-1" aria-label="Categorías del blog">
-      <button 
-        type="button" 
-        class="category-btn" 
+      <button
+        type="button"
+        class="category-btn"
         [class.active]="selectedCategory === 'all'"
+        [attr.aria-pressed]="selectedCategory === 'all'"
         (click)="filterCategory('all')">
         Todos
       </button>
-      <button 
-        type="button" 
-        class="category-btn" 
+      <button
+        type="button"
+        class="category-btn"
         *ngFor="let cat of categories"
         [class.active]="selectedCategory === cat"
+        [attr.aria-pressed]="selectedCategory === cat"
         (click)="filterCategory(cat)">
         {{ cat }}
       </button>
@@ -31,25 +38,33 @@
 
     <!-- Grid de posts -->
     <div class="blog-grid">
-      <article 
-        class="blog-card" 
+      <article
+        class="blog-card"
         *ngFor="let post of filteredPosts"
-        [class.is-clickable]="post.link"
-        (click)="openPostLink(post)">
+        [class.is-clickable]="post.link">
         <div class="blog-card-media">
-          <img [src]="blogService.getImageUrl(post.image)" [alt]="post.title" class="blog-card-img" loading="lazy">
+          <img [src]="blogService.getImageUrl(post.image)"
+               [alt]="post.title"
+               class="blog-card-img"
+               loading="lazy">
           <span class="blog-card-date">
-            <i class="fa-regular fa-calendar"></i> {{ post.date }}
+            <i class="fa-regular fa-calendar" aria-hidden="true"></i> {{ post.date }}
           </span>
         </div>
 
         <div class="blog-card-content">
-          <span class="blog-card-tag">{{ post.category }}</span>
+          <div class="blog-card-meta">
+            <span class="blog-card-tag">{{ post.category }}</span>
+          </div>
           <h2 class="blog-card-title">{{ post.title }}</h2>
           <p class="blog-card-excerpt">{{ post.desc }}</p>
 
-          <div class="blog-card-link-btn" *ngIf="post.link">
-            <span>Leer noticia completa <i class="fa-solid fa-arrow-right"></i></span>
+          <div class="blog-card-footer" *ngIf="post.link">
+            <button type="button"
+                    class="btn-read-more"
+                    (click)="openPostLink(post)">
+              <span>Leer noticia completa</span>
+            </button>
           </div>
         </div>
       </article>
@@ -57,8 +72,8 @@
 
     <!-- Mensaje si no hay posts filtrados -->
     <div class="blog-empty reveal-fade" *ngIf="filteredPosts.length === 0">
+      <span class="empty-code">0 RESULTADOS</span>
       <p>No se encontraron artículos en esta categoría.</p>
     </div>
-
   </div>
 </section>

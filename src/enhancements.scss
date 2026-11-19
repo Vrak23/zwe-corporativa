@@ -1,9 +1,10 @@
 // =============================================================================
-// ZWE CORPORATIVA — GLOBAL ENHANCEMENTS (RESPONSIVE FOUNDATION)
+// ZWE CORPORATIVA — BASE FOUNDATION & RESPONSIVE CONTAINER
 // =============================================================================
 
-// ---------- Base reset -------------------------------------------------------
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
@@ -20,42 +21,51 @@ body {
   width: 100%;
   overflow-x: clip;
   position: relative;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
 body,
-p, span, li, a, h1, h2, h3, h4, h5, h6,
-button, input, textarea, select {
-  font-family: 'Poppins', 'Open Sans', Helvetica, Arial, sans-serif;
+p,
+span,
+li,
+a,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+button,
+input,
+textarea,
+select {
+  font-family: var(--font-sans, 'Plus Jakarta Sans', system-ui, sans-serif);
 }
 
-img, picture, svg, video {
+img,
+picture,
+svg,
+video {
   max-width: 100%;
   height: auto;
   display: block;
 }
 
-button, a {
+button,
+a {
   touch-action: manipulation;
 }
 
-// Global container utility
 .container {
   width: 100%;
-  max-width: 1240px;
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: 24px;
-  padding-right: 24px;
+  max-width: 1280px;
+  margin-inline: auto;
+  padding-inline: 32px;
 
   @media (max-width: 768px) {
-    padding-left: 20px;
-    padding-right: 20px;
+    padding-inline: 20px;
   }
 
   @media (max-width: 480px) {
-    padding-left: 16px;
-    padding-right: 16px;
+    padding-inline: 16px;
   }
 }
